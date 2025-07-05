@@ -265,30 +265,3 @@ jobs:
         echo "TODO: Create Homebrew formula update"
         echo "This would update a Homebrew tap with the new version"
 
-  notify-discord:
-    runs-on: ubuntu-latest
-    needs: [create-release, build-python-package, build-binaries]
-    if: always()
-    steps:
-    - name: Notify Discord
-      if: ${{ secrets.DISCORD_WEBHOOK }}
-      run: |
-        if [ "${{ needs.build-python-package.result }}" == "success" ] && [ "${{ needs.build-binaries.result }}" == "success" ]; then
-          STATUS="✅ Success"
-          COLOR="3066993"
-        else
-          STATUS="❌ Failed"
-          COLOR="15158332"
-        fi
-        
-        curl -H "Content-Type: application/json" \
-             -X POST \
-             -d "{
-               \"embeds\": [{
-                 \"title\": \"Flow CLI Release ${{ needs.create-release.outputs.tag_name }}\",
-                 \"description\": \"Release status: $STATUS\",
-                 \"color\": $COLOR,
-                 \"url\": \"https://github.com/flowstore/flow-cli/releases/tag/${{ needs.create-release.outputs.tag_name }}\"
-               }]
-             }" \
-             ${{ secrets.DISCORD_WEBHOOK }}
