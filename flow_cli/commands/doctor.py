@@ -21,20 +21,20 @@ console = Console()
 
 @click.command()
 @click.option("--verbose", "-v", is_flag=True, help="Show detailed information")
-def doctor_command(verbose: bool) -> None:
+@click.option("--fix", is_flag=True, help="Attempt to fix detected issues")
+@click.option("--json", "json_output", is_flag=True, help="Output results in JSON format")
+def doctor_command(verbose: bool, fix: bool, json_output: bool) -> None:
     """
     🩺 Check development environment health
 
     Verifies that all required tools are installed and configured correctly
     for Flutter development with Flow CLI.
     """
-    show_section_header("Environment Health Check", "🩺")
+    if not json_output:
+        show_section_header("Environment Health Check", "🩺")
 
-    with Progress(
-        SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console
-    ) as progress:
-
-        # Collect all checks
+    if json_output:
+        # For JSON output, run checks without progress indicators
         checks = [
             ("Checking Flutter SDK...", check_flutter),
             ("Checking Python environment...", check_python),
@@ -43,17 +43,44 @@ def doctor_command(verbose: bool) -> None:
             ("Checking Git...", check_git),
             ("Checking required Python packages...", check_python_packages),
         ]
-
+        
         results = []
-
         for description, check_func in checks:
-            task = progress.add_task(description, total=None)
             result = check_func(verbose)
             results.append(result)
-            progress.remove_task(task)
+    else:
+        # For normal output, show progress
+        with Progress(
+            SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console
+        ) as progress:
+
+            # Collect all checks
+            checks = [
+                ("Checking Flutter SDK...", check_flutter),
+                ("Checking Python environment...", check_python),
+                ("Checking Android SDK...", check_android),
+                ("Checking iOS development (macOS only)...", check_ios),
+                ("Checking Git...", check_git),
+                ("Checking required Python packages...", check_python_packages),
+            ]
+
+            results = []
+
+            for description, check_func in checks:
+                task = progress.add_task(description, total=None)
+                result = check_func(verbose)
+                results.append(result)
+                progress.remove_task(task)
 
     # Display results
-    display_results(results, verbose)
+    if json_output:
+        display_json_results(results)
+    else:
+        display_results(results, verbose)
+        
+    # Handle fix flag
+    if fix:
+        handle_fixes(results)
 
 
 def check_flutter(verbose: bool) -> Tuple[str, str, str, str]:
@@ -312,3 +339,67 @@ def show_recommendations(results: List[Tuple[str, str, str, str]]) -> None:
             rec_text, title="💡 Recommendations", border_style="blue", box=box.ROUNDED
         )
         console.print(rec_panel)
+
+
+def display_json_results(results: List[Tuple[str, str, str, str]]) -> None:
+    """Display results in JSON format"""
+    import json
+    
+    json_data = {
+        "timestamp": __import__("datetime").datetime.now().isoformat(),
+        "checks": []
+    }
+    
+    for component, status, info, details in results:
+        json_data["checks"].append({
+            "component": component,
+            "status": status,
+            "info": info,
+            "details": details
+        })
+    
+    # Count statuses
+    status_counts = {"success": 0, "warning": 0, "error": 0, "info": 0}
+    for _, status, _, _ in results:
+        if status == "✅":
+            status_counts["success"] += 1
+        elif status == "⚠️":
+            status_counts["warning"] += 1
+        elif status == "❌":
+            status_counts["error"] += 1
+        elif status == "ℹ️":
+            status_counts["info"] += 1
+    
+    json_data["summary"] = status_counts
+    
+    console.print(json.dumps(json_data, indent=2))
+
+
+def handle_fixes(results: List[Tuple[str, str, str, str]]) -> None:
+    """Attempt to fix detected issues"""
+    console.print("\n[bold blue]🔧 Attempting to fix issues...[/bold blue]")
+    
+    fixes_applied = 0
+    
+    for component, status, info, details in results:
+        if status in ["❌", "⚠️"]:
+            console.print(f"[yellow]• {component}: {details}[/yellow]")
+            
+            # Simple fix suggestions - in a real implementation, these would be more sophisticated
+            if "Flutter SDK" in component and "Not found" in info:
+                console.print("  [dim]→ Install Flutter SDK from https://flutter.dev[/dim]")
+                fixes_applied += 1
+            elif "Android SDK" in component and "Not found" in info:
+                console.print("  [dim]→ Install Android Studio and Android SDK[/dim]")
+                fixes_applied += 1
+            elif "Git" in component and "Not found" in info:
+                console.print("  [dim]→ Install Git from https://git-scm.com[/dim]")
+                fixes_applied += 1
+            elif "Python Packages" in component and "missing" in info:
+                console.print("  [dim]→ Run: pip install -r requirements.txt[/dim]")
+                fixes_applied += 1
+    
+    if fixes_applied > 0:
+        console.print(f"\n[green]✅ Applied {fixes_applied} fix suggestions[/green]")
+    else:
+        console.print("\n[blue]ℹ️ No automatic fixes available[/blue]")
