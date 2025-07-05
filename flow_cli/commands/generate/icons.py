@@ -2,14 +2,15 @@
 Icons generation command - Generate app icons using flutter_launcher_icons
 """
 
+import json
 import subprocess
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
 
 import click
-import inquirer
-import yaml
+import inquirer  # type: ignore[import-untyped]
+import yaml  # type: ignore[import-untyped]
 from rich import box
 from rich.console import Console
 from rich.panel import Panel

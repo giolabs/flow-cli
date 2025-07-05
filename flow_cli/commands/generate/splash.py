@@ -8,8 +8,8 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import click
-import inquirer
-import yaml
+import inquirer  # type: ignore[import-untyped]
+import yaml  # type: ignore[import-untyped]
 from rich import box
 from rich.console import Console
 from rich.panel import Panel
