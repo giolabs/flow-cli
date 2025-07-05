@@ -9,8 +9,8 @@ import os
 import shutil
 import tempfile
 from pathlib import Path
-from unittest.mock import Mock, patch
 from typing import Any, Callable, Dict, Generator, Iterator, List, Optional, Union
+from unittest.mock import Mock, patch
 
 import pytest
 from click.testing import CliRunner

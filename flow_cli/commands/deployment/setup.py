@@ -5,7 +5,7 @@ Fastlane setup command - Configure Fastlane for Flutter project
 import json
 import subprocess
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional
 
 import click
 import inquirer

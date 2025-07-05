@@ -4,9 +4,9 @@ Tests for the doctor command
 
 # mypy: ignore-errors
 
-from unittest.mock import Mock, patch
 from pathlib import Path
 from typing import Any, Dict, List
+from unittest.mock import Mock, patch
 
 import pytest
 from click.testing import CliRunner
