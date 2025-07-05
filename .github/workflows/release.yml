@@ -1,0 +1,294 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      tag_name: ${{ steps.get_tag.outputs.tag_name }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get tag name
+      id: get_tag
+      run: echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Generate release notes
+      id: generate_notes
+      run: |
+        # Get the previous tag
+        PREV_TAG=$(git describe --abbrev=0 --tags HEAD^ 2>/dev/null || echo "")
+        
+        # Generate changelog
+        if [ -n "$PREV_TAG" ]; then
+          echo "## Changes since $PREV_TAG" > release_notes.md
+          echo "" >> release_notes.md
+          
+          # Get commits between tags
+          git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD >> release_notes.md
+        else
+          echo "## Initial Release" > release_notes.md
+          echo "" >> release_notes.md
+          echo "First release of Flow CLI - A beautiful, interactive CLI tool for Flutter developers." >> release_notes.md
+        fi
+        
+        echo "" >> release_notes.md
+        echo "## Installation" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### Via PyPI" >> release_notes.md
+        echo "\`\`\`bash" >> release_notes.md
+        echo "pip install flow-cli" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### Via Binary (Linux/macOS)" >> release_notes.md
+        echo "\`\`\`bash" >> release_notes.md
+        echo "curl -sSL https://github.com/flowstore/flow-cli/releases/download/${{ steps.get_tag.outputs.tag_name }}/install.sh | bash" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### Via Binary (Windows)" >> release_notes.md
+        echo "\`\`\`powershell" >> release_notes.md
+        echo "Invoke-WebRequest -Uri https://github.com/flowstore/flow-cli/releases/download/${{ steps.get_tag.outputs.tag_name }}/flow-cli-windows.exe -OutFile flow.exe" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_tag.outputs.tag_name }}
+        release_name: Flow CLI ${{ steps.get_tag.outputs.tag_name }}
+        body_path: release_notes.md
+        draft: false
+        prerelease: ${{ contains(steps.get_tag.outputs.tag_name, '-') }}
+
+  build-python-package:
+    runs-on: ubuntu-latest
+    needs: create-release
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        twine upload dist/*
+
+    - name: Upload Python packages to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: dist/flow_cli-*.tar.gz
+        asset_name: flow-cli-${{ needs.create-release.outputs.tag_name }}.tar.gz
+        asset_content_type: application/gzip
+
+  build-binaries:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux
+            artifact_name: flow-cli-linux
+            asset_name: flow-cli-linux
+          - os: windows-latest
+            target: windows
+            artifact_name: flow-cli-windows.exe
+            asset_name: flow-cli-windows.exe
+          - os: macos-latest
+            target: macos
+            artifact_name: flow-cli-macos
+            asset_name: flow-cli-macos
+
+    runs-on: ${{ matrix.os }}
+    needs: create-release
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -e .
+
+    - name: Build binary with PyInstaller
+      run: |
+        pyinstaller --onefile --name ${{ matrix.artifact_name }} --add-data "flow_cli:flow_cli" flow_cli/main.py
+
+    - name: Upload binary to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: dist/${{ matrix.artifact_name }}
+        asset_name: ${{ matrix.asset_name }}
+        asset_content_type: application/octet-stream
+
+  create-install-scripts:
+    runs-on: ubuntu-latest
+    needs: [create-release, build-binaries]
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create install script for Unix systems
+      run: |
+        cat > install.sh << 'EOF'
+        #!/bin/bash
+        set -e
+        
+        # Flow CLI Installation Script
+        
+        GITHUB_REPO="flowstore/flow-cli"
+        INSTALL_DIR="$HOME/.local/bin"
+        
+        # Detect OS
+        OS=$(uname -s)
+        case $OS in
+          Linux*)     BINARY_NAME="flow-cli-linux";;
+          Darwin*)    BINARY_NAME="flow-cli-macos";;
+          *)          echo "Unsupported OS: $OS"; exit 1;;
+        esac
+        
+        # Get latest release tag
+        TAG="${{ needs.create-release.outputs.tag_name }}"
+        
+        echo "Installing Flow CLI $TAG for $OS..."
+        
+        # Create install directory
+        mkdir -p "$INSTALL_DIR"
+        
+        # Download binary
+        DOWNLOAD_URL="https://github.com/$GITHUB_REPO/releases/download/$TAG/$BINARY_NAME"
+        curl -sSL "$DOWNLOAD_URL" -o "$INSTALL_DIR/flow"
+        
+        # Make executable
+        chmod +x "$INSTALL_DIR/flow"
+        
+        echo "Flow CLI installed successfully!"
+        echo "Make sure $INSTALL_DIR is in your PATH."
+        echo ""
+        echo "Add this line to your ~/.bashrc or ~/.zshrc:"
+        echo "export PATH=\"\$HOME/.local/bin:\$PATH\""
+        echo ""
+        echo "Then run: flow --help"
+        EOF
+        
+        chmod +x install.sh
+
+    - name: Create install script for Windows
+      run: |
+        cat > install.ps1 << 'EOF'
+        # Flow CLI Installation Script for Windows
+        
+        $GitHubRepo = "flowstore/flow-cli"
+        $InstallDir = "$env:USERPROFILE\.local\bin"
+        $Tag = "${{ needs.create-release.outputs.tag_name }}"
+        
+        Write-Host "Installing Flow CLI $Tag for Windows..."
+        
+        # Create install directory
+        New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
+        
+        # Download binary
+        $DownloadUrl = "https://github.com/$GitHubRepo/releases/download/$Tag/flow-cli-windows.exe"
+        $OutputPath = "$InstallDir\flow.exe"
+        
+        Invoke-WebRequest -Uri $DownloadUrl -OutFile $OutputPath
+        
+        Write-Host "Flow CLI installed successfully!"
+        Write-Host "Make sure $InstallDir is in your PATH."
+        Write-Host ""
+        Write-Host "Add $InstallDir to your PATH environment variable."
+        Write-Host "Then run: flow --help"
+        EOF
+
+    - name: Upload install scripts to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: install.sh
+        asset_name: install.sh
+        asset_content_type: application/x-sh
+
+    - name: Upload Windows install script to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: install.ps1
+        asset_name: install.ps1
+        asset_content_type: application/x-powershell
+
+  update-homebrew:
+    runs-on: ubuntu-latest
+    needs: [create-release, build-binaries]
+    if: ${{ !contains(needs.create-release.outputs.tag_name, '-') }}
+    steps:
+    - name: Update Homebrew formula
+      run: |
+        echo "TODO: Create Homebrew formula update"
+        echo "This would update a Homebrew tap with the new version"
+
+  notify-discord:
+    runs-on: ubuntu-latest
+    needs: [create-release, build-python-package, build-binaries]
+    if: always()
+    steps:
+    - name: Notify Discord
+      if: ${{ secrets.DISCORD_WEBHOOK }}
+      run: |
+        if [ "${{ needs.build-python-package.result }}" == "success" ] && [ "${{ needs.build-binaries.result }}" == "success" ]; then
+          STATUS="✅ Success"
+          COLOR="3066993"
+        else
+          STATUS="❌ Failed"
+          COLOR="15158332"
+        fi
+        
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d "{
+               \"embeds\": [{
+                 \"title\": \"Flow CLI Release ${{ needs.create-release.outputs.tag_name }}\",
+                 \"description\": \"Release status: $STATUS\",
+                 \"color\": $COLOR,
+                 \"url\": \"https://github.com/flowstore/flow-cli/releases/tag/${{ needs.create-release.outputs.tag_name }}\"
+               }]
+             }" \
+             ${{ secrets.DISCORD_WEBHOOK }}
