@@ -83,25 +83,35 @@
 
 <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
 
+
 <div class="viewcode-block" id="show_banner">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.core.ui.banner.show_banner">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_banner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the main Flow CLI banner&quot;&quot;&quot;</span>
-    
+
     <span class="c1"># Create banner art</span>
     <span class="n">banner_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">()</span>
-    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;╔═══════════════════════════════════════════════════════════════╗</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span><span class="p">)</span>
+    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="s2">&quot;╔═══════════════════════════════════════════════════════════════╗</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span>
+    <span class="p">)</span>
     <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;║&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span><span class="p">)</span>
-    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;                        Flow CLI                              &quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold bright_white&quot;</span><span class="p">)</span>
+    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="s2">&quot;                        Flow CLI                              &quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold bright_white&quot;</span>
+    <span class="p">)</span>
     <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;║</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span><span class="p">)</span>
     <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;║&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span><span class="p">)</span>
-    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;            🚀 Flutter Development Made Easy 🚀               &quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_blue&quot;</span><span class="p">)</span>
+    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="s2">&quot;            🚀 Flutter Development Made Easy 🚀               &quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_blue&quot;</span>
+    <span class="p">)</span>
     <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;║</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span><span class="p">)</span>
-    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;╚═══════════════════════════════════════════════════════════════╝&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span><span class="p">)</span>
-    
+    <span class="n">banner_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="s2">&quot;╚═══════════════════════════════════════════════════════════════╝&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_cyan&quot;</span>
+    <span class="p">)</span>
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">Align</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">banner_text</span><span class="p">))</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span></div>
+
 
 
 <div class="viewcode-block" id="show_section_header">
@@ -109,13 +119,9 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">show_section_header</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">icon</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;📋&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show a section header with consistent styling&quot;&quot;&quot;</span>
     <span class="n">header_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">icon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-        <span class="n">header_text</span><span class="p">,</span>
-        <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span>
-        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">SIMPLE</span><span class="p">,</span>
-        <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">header_text</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">SIMPLE</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="show_success">
@@ -125,6 +131,7 @@
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[green]✅ </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">[/green]&quot;</span><span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="show_error">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.core.ui.banner.show_error">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_error</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -132,11 +139,13 @@
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[red]❌ </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">[/red]&quot;</span><span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="show_warning">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.core.ui.banner.show_warning">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_warning</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show a warning message&quot;&quot;&quot;</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yellow]⚠️  </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">[/yellow]&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="show_info">

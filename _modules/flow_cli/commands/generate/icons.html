@@ -94,32 +94,38 @@
 
 <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
 
+
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--flavor&#39;</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Generate icons for specific flavor&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--all-flavors&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Generate icons for all flavors&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--platform&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Choice</span><span class="p">([</span><span class="s1">&#39;android&#39;</span><span class="p">,</span> <span class="s1">&#39;ios&#39;</span><span class="p">,</span> <span class="s1">&#39;both&#39;</span><span class="p">]),</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Target platform&#39;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--flavor&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Generate icons for specific flavor&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--all-flavors&quot;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Generate icons for all flavors&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
+    <span class="s2">&quot;--platform&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Choice</span><span class="p">([</span><span class="s2">&quot;android&quot;</span><span class="p">,</span> <span class="s2">&quot;ios&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]),</span>
+    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Target platform&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">icons_command</span><span class="p">(</span><span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">all_flavors</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    🎯 Generate app icons</span>
-<span class="sd">    </span>
+
 <span class="sd">    Generate app icons for Android and iOS using flutter_launcher_icons.</span>
 <span class="sd">    Supports adaptive icons for Android and proper icon sizes for iOS.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="c1"># Find Flutter project</span>
     <span class="n">project</span> <span class="o">=</span> <span class="n">FlutterProject</span><span class="o">.</span><span class="n">find_project</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;No Flutter project found in current directory&quot;</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
-    
+
     <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;Generate App Icons&quot;</span><span class="p">,</span> <span class="s2">&quot;🎯&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Check if flutter_launcher_icons is installed</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="o">.</span><span class="n">has_dependency</span><span class="p">(</span><span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="o">.</span><span class="n">has_dependency</span><span class="p">(</span><span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">):</span>
         <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;flutter_launcher_icons package not found in dependencies&quot;</span><span class="p">)</span>
         <span class="n">show_package_installation_help</span><span class="p">()</span>
         <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
-    
+
     <span class="c1"># Interactive selection if needed</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">flavor</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">all_flavors</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="o">.</span><span class="n">flavors</span><span class="p">:</span>
@@ -129,7 +135,7 @@
             <span class="n">flavor</span><span class="p">,</span> <span class="n">all_flavors</span> <span class="o">=</span> <span class="n">interactive_flavor_selection</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">flavors</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">flavor</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">all_flavors</span><span class="p">:</span>
                 <span class="k">return</span>
-    
+
     <span class="c1"># Generate icons</span>
     <span class="k">if</span> <span class="n">all_flavors</span><span class="p">:</span>
         <span class="n">generate_all_flavor_icons</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">project</span><span class="o">.</span><span class="n">flavors</span><span class="p">,</span> <span class="n">platform</span><span class="p">)</span>
@@ -138,301 +144,298 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">generate_main_app_icons</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">platform</span><span class="p">)</span>
 
+
 <div class="viewcode-block" id="interactive_flavor_selection">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.interactive_flavor_selection">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">interactive_flavor_selection</span><span class="p">(</span><span class="n">flavors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Interactive flavor selection for icon generation&quot;&quot;&quot;</span>
-    
+
     <span class="n">choices</span> <span class="o">=</span> <span class="n">flavors</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;All flavors&quot;</span><span class="p">,</span> <span class="s2">&quot;Main app (no flavor)&quot;</span><span class="p">]</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;selection&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select target for icon generation:&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="n">choices</span>
+                <span class="s2">&quot;selection&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select target for icon generation:&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span>
             <span class="p">)</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span>
-        
-        <span class="n">selection</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;selection&#39;</span><span class="p">]</span>
+
+        <span class="n">selection</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s2">&quot;selection&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="s2">&quot;All flavors&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="s2">&quot;Main app (no flavor)&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">selection</span><span class="p">,</span> <span class="kc">False</span>
-            
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span></div>
+
 
 
 <div class="viewcode-block" id="generate_main_app_icons">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.generate_main_app_icons">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_main_app_icons</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate icons for main app (no flavor)&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[cyan]Generating icons for main app...[/cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Check for icon file</span>
     <span class="n">icon_path</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;assets&quot;</span> <span class="o">/</span> <span class="s2">&quot;icon.png&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">icon_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;Icon file not found: assets/icon.png&quot;</span><span class="p">)</span>
         <span class="n">show_icon_requirements</span><span class="p">()</span>
         <span class="k">return</span>
-    
+
     <span class="c1"># Create configuration</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">create_icon_config</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">platform</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon_path</span><span class="p">))</span>
-    
+
     <span class="c1"># Generate icons</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">run_flutter_launcher_icons</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
+
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]:</span>
         <span class="n">show_success</span><span class="p">(</span><span class="s2">&quot;Icons generated successfully for main app&quot;</span><span class="p">)</span>
         <span class="n">show_generated_files</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Icon generation failed: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Unknown error&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="generate_flavor_icons">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.generate_flavor_icons">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_flavor_icons</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">flavor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate icons for specific flavor&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]Generating icons for flavor: </span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">...[/cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Check flavor configuration</span>
     <span class="n">flavor_dir</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;assets&quot;</span> <span class="o">/</span> <span class="s2">&quot;configs&quot;</span> <span class="o">/</span> <span class="n">flavor</span>
     <span class="n">icon_path</span> <span class="o">=</span> <span class="n">flavor_dir</span> <span class="o">/</span> <span class="s2">&quot;icon.png&quot;</span>
-    
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">icon_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Icon file not found for flavor &#39;</span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">icon_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">show_flavor_requirements</span><span class="p">(</span><span class="n">flavor</span><span class="p">)</span>
         <span class="k">return</span>
-    
+
     <span class="c1"># Create configuration</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">create_icon_config</span><span class="p">(</span><span class="n">flavor</span><span class="p">,</span> <span class="n">platform</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon_path</span><span class="p">))</span>
-    
+
     <span class="c1"># Generate icons</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">run_flutter_launcher_icons</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">flavor</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
+
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]:</span>
         <span class="n">show_success</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Icons generated successfully for flavor: </span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">show_generated_files</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">flavor</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Icon generation failed for </span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Unknown error&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="generate_all_flavor_icons">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.generate_all_flavor_icons">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_all_flavor_icons</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">flavors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate icons for all flavors&quot;&quot;&quot;</span>
-    
+
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-    
+
     <span class="k">with</span> <span class="n">Progress</span><span class="p">(</span>
-        <span class="n">SpinnerColumn</span><span class="p">(),</span>
-        <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">),</span>
-        <span class="n">console</span><span class="o">=</span><span class="n">console</span>
+        <span class="n">SpinnerColumn</span><span class="p">(),</span> <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">console</span><span class="o">=</span><span class="n">console</span>
     <span class="p">)</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
-        
+
         <span class="k">for</span> <span class="n">flavor</span> <span class="ow">in</span> <span class="n">flavors</span><span class="p">:</span>
             <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating icons for </span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            
+
             <span class="c1"># Check flavor icon</span>
             <span class="n">flavor_dir</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;assets&quot;</span> <span class="o">/</span> <span class="s2">&quot;configs&quot;</span> <span class="o">/</span> <span class="n">flavor</span>
             <span class="n">icon_path</span> <span class="o">=</span> <span class="n">flavor_dir</span> <span class="o">/</span> <span class="s2">&quot;icon.png&quot;</span>
-            
+
             <span class="k">if</span> <span class="ow">not</span> <span class="n">icon_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">flavor</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Icon file not found: </span><span class="si">{</span><span class="n">icon_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}))</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">flavor</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Icon file not found: </span><span class="si">{</span><span class="n">icon_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+                <span class="p">)</span>
                 <span class="n">progress</span><span class="o">.</span><span class="n">remove_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
                 <span class="k">continue</span>
-            
+
             <span class="c1"># Create config and generate</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">create_icon_config</span><span class="p">(</span><span class="n">flavor</span><span class="p">,</span> <span class="n">platform</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon_path</span><span class="p">))</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">run_flutter_launcher_icons</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">flavor</span><span class="p">)</span>
             <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">flavor</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
-            
+
             <span class="n">progress</span><span class="o">.</span><span class="n">remove_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
-    
+
     <span class="c1"># Display results</span>
     <span class="n">display_batch_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s2">&quot;Icons Generation&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="create_icon_config">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.create_icon_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_icon_config</span><span class="p">(</span><span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">icon_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create flutter_launcher_icons configuration&quot;&quot;&quot;</span>
-    
-    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;image_path&#39;</span><span class="p">:</span> <span class="n">icon_path</span><span class="p">,</span>
-            <span class="s1">&#39;remove_alpha_ios&#39;</span><span class="p">:</span> <span class="kc">True</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    
+
+    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;image_path&quot;</span><span class="p">:</span> <span class="n">icon_path</span><span class="p">,</span> <span class="s2">&quot;remove_alpha_ios&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}}</span>
+
     <span class="c1"># Platform settings</span>
-    <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;android&#39;</span><span class="p">,</span> <span class="s1">&#39;both&#39;</span><span class="p">]:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">][</span><span class="s1">&#39;android&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">][</span><span class="s1">&#39;adaptive_icon_foreground&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">icon_path</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">][</span><span class="s1">&#39;adaptive_icon_background&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;#FFFFFF&#39;</span>
-    
-    <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ios&#39;</span><span class="p">,</span> <span class="s1">&#39;both&#39;</span><span class="p">]:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">][</span><span class="s1">&#39;ios&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-    
+    <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;android&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]:</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">][</span><span class="s2">&quot;android&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">][</span><span class="s2">&quot;adaptive_icon_foreground&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">icon_path</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">][</span><span class="s2">&quot;adaptive_icon_background&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;#FFFFFF&quot;</span>
+
+    <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ios&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]:</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">][</span><span class="s2">&quot;ios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="c1"># Web support</span>
-    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">][</span><span class="s1">&#39;web&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;generate&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s1">&#39;image_path&#39;</span><span class="p">:</span> <span class="n">icon_path</span><span class="p">,</span>
-        <span class="s1">&#39;background_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#FFFFFF&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;theme_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#FFFFFF&#39;</span>
+    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">][</span><span class="s2">&quot;web&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;generate&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;image_path&quot;</span><span class="p">:</span> <span class="n">icon_path</span><span class="p">,</span>
+        <span class="s2">&quot;background_color&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;theme_color&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>
     <span class="p">}</span>
-    
+
     <span class="k">return</span> <span class="n">config</span></div>
+
 
 
 <div class="viewcode-block" id="run_flutter_launcher_icons">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.run_flutter_launcher_icons">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">run_flutter_launcher_icons</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_flutter_launcher_icons</span><span class="p">(</span>
+    <span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run flutter_launcher_icons with given configuration&quot;&quot;&quot;</span>
-    
+
     <span class="c1"># Create temporary config file</span>
-    <span class="n">config_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;flutter_launcher_icons_</span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">.yaml&quot;</span> <span class="k">if</span> <span class="n">flavor</span> <span class="k">else</span> <span class="s2">&quot;flutter_launcher_icons.yaml&quot;</span>
+    <span class="n">config_filename</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;flutter_launcher_icons_</span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">.yaml&quot;</span> <span class="k">if</span> <span class="n">flavor</span> <span class="k">else</span> <span class="s2">&quot;flutter_launcher_icons.yaml&quot;</span>
+    <span class="p">)</span>
     <span class="n">config_path</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="n">config_filename</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Write config file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        
+
         <span class="c1"># Run flutter_launcher_icons</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;dart&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">,</span> <span class="s1">&#39;flutter_launcher_icons&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
-        <span class="p">]</span>
-        
-        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-            <span class="n">cmd</span><span class="p">,</span>
-            <span class="n">cwd</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="mi">120</span>
-        <span class="p">)</span>
-        
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dart&quot;</span><span class="p">,</span> <span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="s2">&quot;flutter_launcher_icons&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">config_path</span><span class="p">)]</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;stdout&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
-            <span class="s1">&#39;stderr&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
-            <span class="s1">&#39;returncode&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span>
+            <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+            <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+            <span class="s2">&quot;returncode&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span>
         <span class="p">}</span>
-    
+
     <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Icon generation timed out&#39;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Icon generation timed out&quot;</span><span class="p">}</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="c1"># Clean up config file</span>
         <span class="k">if</span> <span class="n">config_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">config_path</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span></div>
 
 
+
 <div class="viewcode-block" id="show_generated_files">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.show_generated_files">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_generated_files</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show generated icon files&quot;&quot;&quot;</span>
-    
+
     <span class="n">generated_files</span> <span class="o">=</span> <span class="p">[]</span>
-    
+
     <span class="c1"># Android icons</span>
     <span class="n">android_res</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;android&quot;</span> <span class="o">/</span> <span class="s2">&quot;app&quot;</span> <span class="o">/</span> <span class="s2">&quot;src&quot;</span> <span class="o">/</span> <span class="s2">&quot;main&quot;</span> <span class="o">/</span> <span class="s2">&quot;res&quot;</span>
     <span class="k">if</span> <span class="n">flavor</span><span class="p">:</span>
         <span class="n">android_res</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;android&quot;</span> <span class="o">/</span> <span class="s2">&quot;app&quot;</span> <span class="o">/</span> <span class="s2">&quot;src&quot;</span> <span class="o">/</span> <span class="n">flavor</span> <span class="o">/</span> <span class="s2">&quot;res&quot;</span>
-    
+
     <span class="k">if</span> <span class="n">android_res</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">mipmap_dirs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">android_res</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;mipmap-*&quot;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">mipmap_dir</span> <span class="ow">in</span> <span class="n">mipmap_dirs</span><span class="p">:</span>
             <span class="n">icons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mipmap_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.png&quot;</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">icon</span> <span class="ow">in</span> <span class="n">icons</span><span class="p">:</span>
-                <span class="n">generated_files</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;Android&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
-    
+                <span class="n">generated_files</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;Android&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
+
     <span class="c1"># iOS icons</span>
     <span class="n">ios_assets</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;ios&quot;</span> <span class="o">/</span> <span class="s2">&quot;Runner&quot;</span> <span class="o">/</span> <span class="s2">&quot;Assets.xcassets&quot;</span> <span class="o">/</span> <span class="s2">&quot;AppIcon.appiconset&quot;</span>
     <span class="k">if</span> <span class="n">ios_assets</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">icons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ios_assets</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.png&quot;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">icon</span> <span class="ow">in</span> <span class="n">icons</span><span class="p">:</span>
-            <span class="n">generated_files</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;iOS&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
-    
+            <span class="n">generated_files</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;iOS&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
+
     <span class="c1"># Web icons</span>
     <span class="n">web_icons</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;web&quot;</span> <span class="o">/</span> <span class="s2">&quot;icons&quot;</span>
     <span class="k">if</span> <span class="n">web_icons</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">icons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">web_icons</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.png&quot;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">icon</span> <span class="ow">in</span> <span class="n">icons</span><span class="p">:</span>
-            <span class="n">generated_files</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;Web&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
-    
+            <span class="n">generated_files</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;Web&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">icon</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
+
     <span class="k">if</span> <span class="n">generated_files</span><span class="p">:</span>
         <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;📱 Generated Icon Files&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Platform&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;File Path&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_white&quot;</span><span class="p">)</span>
-        
+
         <span class="k">for</span> <span class="n">platform</span><span class="p">,</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">generated_files</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>  <span class="c1"># Show first 10</span>
             <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">platform</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
-        
+
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">generated_files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
             <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">generated_files</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10</span><span class="si">}</span><span class="s2"> more files&quot;</span><span class="p">)</span>
-        
+
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="display_batch_results">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.display_batch_results">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">display_batch_results</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Display batch operation results&quot;&quot;&quot;</span>
-    
+
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;📊 </span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2"> Results&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Flavor&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Details&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
-    
+
     <span class="n">successful</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">failed</span> <span class="o">=</span> <span class="mi">0</span>
-    
+
     <span class="k">for</span> <span class="n">flavor</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]:</span>
             <span class="n">successful</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;[green]✅ Success[/green]&quot;</span>
             <span class="n">details</span> <span class="o">=</span> <span class="s2">&quot;Icons generated&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">failed</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;[red]❌ Failed[/red]&quot;</span>
-            <span class="n">details</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Unknown error&#39;</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
-        
+            <span class="n">details</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown error&quot;</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
+
         <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">flavor</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
-    
+
     <span class="c1"># Summary</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">failed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">summary_style</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span>
         <span class="n">summary_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;✅ All </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2"> flavors completed successfully!&quot;</span>
     <span class="k">elif</span> <span class="n">successful</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">summary_style</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>  
+        <span class="n">summary_style</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>
         <span class="n">summary_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;⚠️ </span><span class="si">{</span><span class="n">successful</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2"> flavors completed successfully&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">summary_style</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span>
         <span class="n">summary_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;❌ All </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2"> flavors failed&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[</span><span class="si">{</span><span class="n">summary_style</span><span class="si">}</span><span class="s2">]</span><span class="si">{</span><span class="n">summary_text</span><span class="si">}</span><span class="s2">[/</span><span class="si">{</span><span class="n">summary_style</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="show_package_installation_help">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.show_package_installation_help">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_package_installation_help</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show help for installing flutter_launcher_icons&quot;&quot;&quot;</span>
-    
+
     <span class="n">help_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[yellow]flutter_launcher_icons package not found.[/yellow]</span>
 
 <span class="s2">To install flutter_launcher_icons:</span>
@@ -449,21 +452,17 @@
 
 <span class="s2">[dim]Package documentation:[/dim]</span>
 <span class="s2">https://pub.dev/packages/flutter_launcher_icons&quot;&quot;&quot;</span>
-    
-    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-        <span class="n">help_text</span><span class="p">,</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📦 Package Installation&quot;</span><span class="p">,</span>
-        <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
-    <span class="p">)</span>
+
+    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">help_text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📦 Package Installation&quot;</span><span class="p">,</span> <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">)</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="show_icon_requirements">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.show_icon_requirements">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_icon_requirements</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show icon file requirements&quot;&quot;&quot;</span>
-    
+
     <span class="n">requirements_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[yellow]Icon file requirements:[/yellow]</span>
 
 <span class="s2">📁 Required file location:</span>
@@ -481,21 +480,19 @@
 <span class="s2">  • Avoid text (may be unreadable at small sizes)</span>
 <span class="s2">  • Simple, recognizable design</span>
 <span class="s2">  • High contrast colors&quot;&quot;&quot;</span>
-    
+
     <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-        <span class="n">requirements_text</span><span class="p">,</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🎯 Icon Requirements&quot;</span><span class="p">,</span>
-        <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
+        <span class="n">requirements_text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🎯 Icon Requirements&quot;</span><span class="p">,</span> <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
     <span class="p">)</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="show_flavor_requirements">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.icons.show_flavor_requirements">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_flavor_requirements</span><span class="p">(</span><span class="n">flavor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show flavor icon requirements&quot;&quot;&quot;</span>
-    
+
     <span class="n">requirements_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;[yellow]Icon file missing for flavor &#39;</span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">&#39;[/yellow]</span>
 
 <span class="s2">📁 Required file location:</span>
@@ -511,12 +508,12 @@
 <span class="s2">1. Create directory: [cyan]mkdir -p assets/configs/</span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">[/cyan]</span>
 <span class="s2">2. Add icon file: [cyan]assets/configs/</span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">/icon.png[/cyan]</span>
 <span class="s2">3. Generate icons: [cyan]flow generate icons --flavor </span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">[/cyan]&quot;&quot;&quot;</span>
-    
+
     <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
         <span class="n">requirements_text</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;🎯 Flavor &#39;</span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">&#39; Requirements&quot;</span><span class="p">,</span>
         <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
+        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
 

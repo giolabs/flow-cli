@@ -87,67 +87,66 @@
 
 <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
 
+
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--flavor&#39;</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Flavor to run&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--device&#39;</span><span class="p">,</span> <span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Device ID to run on&#39;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--flavor&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Flavor to run&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--device&quot;</span><span class="p">,</span> <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Device ID to run on&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">run_command</span><span class="p">(</span><span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ▶️ Run Flutter app on Android device or emulator</span>
-<span class="sd">    </span>
+
 <span class="sd">    Launches your Flutter app on a connected Android device or emulator</span>
 <span class="sd">    with support for hot reload and debugging.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="c1"># Find Flutter project</span>
     <span class="n">project</span> <span class="o">=</span> <span class="n">FlutterProject</span><span class="o">.</span><span class="n">find_project</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;No Flutter project found in current directory&quot;</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
-    
+
     <span class="n">show_section_header</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running: </span><span class="si">{</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;▶️&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Interactive selection if needed</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">device</span><span class="p">:</span>
         <span class="n">devices</span> <span class="o">=</span> <span class="n">get_android_devices</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">devices</span><span class="p">:</span>
             <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;No Android devices found. Connect a device or start an emulator.&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
-        
+
         <span class="n">device</span> <span class="o">=</span> <span class="n">select_device</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">device</span><span class="p">:</span>
             <span class="k">return</span>
-    
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">flavor</span> <span class="ow">and</span> <span class="n">project</span><span class="o">.</span><span class="n">flavors</span><span class="p">:</span>
         <span class="n">flavor</span> <span class="o">=</span> <span class="n">select_flavor</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">flavors</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">flavor</span><span class="p">:</span>
             <span class="k">return</span>
-    
+
     <span class="c1"># Run the app</span>
     <span class="n">run_flutter_app</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">flavor</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="get_android_devices">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.android.run.get_android_devices">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_android_devices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of connected Android devices&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="s1">&#39;devices&#39;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;flutter&quot;</span><span class="p">,</span> <span class="s2">&quot;devices&quot;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">devices</span> <span class="o">=</span> <span class="p">[]</span>
-        
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s1">&#39;android&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;•&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;•&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;android&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="s2">&quot;•&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;•&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                     <span class="n">device_id</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                    <span class="n">devices</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-                        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">device_id</span><span class="p">,</span>
-                        <span class="s1">&#39;platform&#39;</span><span class="p">:</span> <span class="s1">&#39;android&#39;</span>
-                    <span class="p">})</span>
-        
+                    <span class="n">devices</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">device_id</span><span class="p">,</span> <span class="s2">&quot;platform&quot;</span><span class="p">:</span> <span class="s2">&quot;android&quot;</span><span class="p">})</span>
+
         <span class="k">return</span> <span class="n">devices</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[]</span></div>
+
 
 
 <div class="viewcode-block" id="select_device">
@@ -155,29 +154,24 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">select_device</span><span class="p">(</span><span class="n">devices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Interactive device selection&quot;&quot;&quot;</span>
     <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">]</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;device&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select Android device:&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="n">choices</span>
-            <span class="p">)</span>
-        <span class="p">]</span>
-        
+        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span><span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select Android device:&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">)]</span>
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        
+
         <span class="c1"># Extract device ID from selection</span>
-        <span class="n">selected</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-        
+            <span class="k">if</span> <span class="n">device</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">device</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
+
 
 
 <div class="viewcode-block" id="select_flavor">
@@ -185,45 +179,40 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">select_flavor</span><span class="p">(</span><span class="n">flavors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Interactive flavor selection&quot;&quot;&quot;</span>
     <span class="n">choices</span> <span class="o">=</span> <span class="n">flavors</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Default (no flavor)&quot;</span><span class="p">]</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;flavor&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select flavor:&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="n">choices</span>
-            <span class="p">)</span>
-        <span class="p">]</span>
-        
+        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span><span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="s2">&quot;flavor&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select flavor:&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">)]</span>
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        
-        <span class="n">selected</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;flavor&#39;</span><span class="p">]</span>
+
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s2">&quot;flavor&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">selected</span> <span class="o">==</span> <span class="s2">&quot;Default (no flavor)&quot;</span> <span class="k">else</span> <span class="n">selected</span>
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
+
 
 
 <div class="viewcode-block" id="run_flutter_app">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.android.run.run_flutter_app">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">run_flutter_app</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run Flutter app with specified parameters&quot;&quot;&quot;</span>
-    
-    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">]</span>
-    
+
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;flutter&quot;</span><span class="p">,</span> <span class="s2">&quot;run&quot;</span><span class="p">]</span>
+
     <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
-        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="n">device</span><span class="p">])</span>
-    
+        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="n">device</span><span class="p">])</span>
+
     <span class="k">if</span> <span class="n">flavor</span><span class="p">:</span>
-        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;--flavor&#39;</span><span class="p">,</span> <span class="n">flavor</span><span class="p">])</span>
-    
+        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--flavor&quot;</span><span class="p">,</span> <span class="n">flavor</span><span class="p">])</span>
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]Running on device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">flavor</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]Using flavor: </span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[yellow]Press &#39;q&#39; to quit, &#39;r&#39; to hot reload, &#39;R&#39; to hot restart[/yellow]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>

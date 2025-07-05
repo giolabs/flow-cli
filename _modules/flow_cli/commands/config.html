@@ -97,48 +97,41 @@
 <span class="n">CONFIG_FILE</span> <span class="o">=</span> <span class="n">CONFIG_DIR</span> <span class="o">/</span> <span class="s2">&quot;config.yaml&quot;</span>
 
 <span class="n">DEFAULT_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;flutter&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;sdk_path&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;stable&#39;</span>
+    <span class="s2">&quot;flutter&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;channel&quot;</span><span class="p">:</span> <span class="s2">&quot;stable&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;android&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;build_tools_version&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;ios&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;xcode_path&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;team_id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;general&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;default_flavor&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;auto_pub_get&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;verbose_output&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;color_output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s1">&#39;android&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;sdk_path&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;build_tools_version&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;ios&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;xcode_path&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;team_id&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;default_flavor&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;auto_pub_get&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s1">&#39;verbose_output&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;color_output&#39;</span><span class="p">:</span> <span class="kc">True</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;aliases&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;recent_projects&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="s2">&quot;aliases&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="s2">&quot;recent_projects&quot;</span><span class="p">:</span> <span class="p">[],</span>
 <span class="p">}</span>
 
+
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--set&#39;</span><span class="p">,</span> <span class="s1">&#39;set_value&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Set configuration value (key=value)&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--get&#39;</span><span class="p">,</span> <span class="s1">&#39;get_key&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Get configuration value&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--list&#39;</span><span class="p">,</span> <span class="s1">&#39;list_config&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;List all configuration&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--init&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Initialize configuration with setup wizard&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--reset&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Reset configuration to defaults&#39;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">config_command</span><span class="p">(</span><span class="n">set_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">get_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">list_config</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> 
-                  <span class="n">init</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">reset</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--set&quot;</span><span class="p">,</span> <span class="s2">&quot;set_value&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Set configuration value (key=value)&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--get&quot;</span><span class="p">,</span> <span class="s2">&quot;get_key&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Get configuration value&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--list&quot;</span><span class="p">,</span> <span class="s2">&quot;list_config&quot;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;List all configuration&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--init&quot;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Initialize configuration with setup wizard&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--reset&quot;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Reset configuration to defaults&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">config_command</span><span class="p">(</span>
+    <span class="n">set_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">get_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">list_config</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">init</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">reset</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ⚙️ Manage Flow CLI global configuration</span>
-<span class="sd">    </span>
+
 <span class="sd">    Configure Flutter SDK paths, default settings, and preferences.</span>
 <span class="sd">    Supports interactive setup wizard and direct value modification.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;Flow CLI Configuration&quot;</span><span class="p">,</span> <span class="s2">&quot;⚙️&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Ensure config directory exists</span>
     <span class="n">ensure_config_dir</span><span class="p">()</span>
-    
+
     <span class="c1"># Handle specific actions</span>
     <span class="k">if</span> <span class="n">init</span><span class="p">:</span>
         <span class="n">run_config_wizard</span><span class="p">()</span>
@@ -154,16 +147,18 @@
         <span class="c1"># Interactive configuration menu</span>
         <span class="n">show_config_menu</span><span class="p">()</span>
 
+
 <div class="viewcode-block" id="ensure_config_dir">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.ensure_config_dir">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">ensure_config_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure configuration directory exists&quot;&quot;&quot;</span>
     <span class="n">CONFIG_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    
+
     <span class="c1"># Create default config if it doesn&#39;t exist</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">CONFIG_FILE</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">save_config</span><span class="p">(</span><span class="n">DEFAULT_CONFIG</span><span class="p">)</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[green]Created default configuration at </span><span class="si">{</span><span class="n">CONFIG_FILE</span><span class="si">}</span><span class="s2">[/green]&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="load_config">
@@ -172,19 +167,20 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load configuration from file&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">CONFIG_FILE</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">DEFAULT_CONFIG</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        
+
         <span class="c1"># Merge with defaults to ensure all keys exist</span>
         <span class="n">merged_config</span> <span class="o">=</span> <span class="n">DEFAULT_CONFIG</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">merged_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">merged_config</span>
-    
+
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to load configuration: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">DEFAULT_CONFIG</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
 
 
 <div class="viewcode-block" id="save_config">
@@ -192,226 +188,219 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">save_config</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save configuration to file&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to save configuration: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="run_config_wizard">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.run_config_wizard">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">run_config_wizard</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run interactive configuration wizard&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[cyan]🧙 Configuration Setup Wizard[/cyan]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;This wizard will help you configure Flow CLI for optimal Flutter development.&quot;</span><span class="p">)</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-    
+
     <span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
-    
+
     <span class="c1"># Flutter SDK Configuration</span>
-    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;flutter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_flutter_sdk</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="p">{}))</span>
-    
-    <span class="c1"># Android SDK Configuration  </span>
-    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;android&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_android_sdk</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;android&#39;</span><span class="p">,</span> <span class="p">{}))</span>
-    
+    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_flutter_sdk</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;flutter&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+
+    <span class="c1"># Android SDK Configuration</span>
+    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;android&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_android_sdk</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;android&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+
     <span class="c1"># iOS Configuration (macOS only)</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+
     <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;ios&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_ios_settings</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ios&#39;</span><span class="p">,</span> <span class="p">{}))</span>
-    
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;ios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_ios_settings</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ios&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+
     <span class="c1"># General Settings</span>
-    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_general_settings</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="p">{}))</span>
-    
+    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configure_general_settings</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+
     <span class="c1"># Save configuration</span>
     <span class="n">save_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    
+
     <span class="n">show_success</span><span class="p">(</span><span class="s2">&quot;Configuration wizard completed!&quot;</span><span class="p">)</span>
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[dim]Configuration saved to: </span><span class="si">{</span><span class="n">CONFIG_FILE</span><span class="si">}</span><span class="s2">[/dim]&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Verify configuration</span>
     <span class="n">verify_configuration</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="configure_flutter_sdk">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.configure_flutter_sdk">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">configure_flutter_sdk</span><span class="p">(</span><span class="n">flutter_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure Flutter SDK settings&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[bold cyan]📱 Flutter SDK Configuration[/bold cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Auto-detect Flutter SDK</span>
     <span class="n">detected_flutter</span> <span class="o">=</span> <span class="n">detect_flutter_sdk</span><span class="p">()</span>
-    <span class="n">current_path</span> <span class="o">=</span> <span class="n">flutter_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sdk_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    
+    <span class="n">current_path</span> <span class="o">=</span> <span class="n">flutter_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">detected_flutter</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[green]✅ Flutter SDK detected: </span><span class="si">{</span><span class="n">detected_flutter</span><span class="si">}</span><span class="s2">[/green]&quot;</span><span class="p">)</span>
         <span class="n">default_path</span> <span class="o">=</span> <span class="n">detected_flutter</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]⚠️  Flutter SDK not found in PATH[/yellow]&quot;</span><span class="p">)</span>
-        <span class="n">default_path</span> <span class="o">=</span> <span class="n">current_path</span> <span class="ow">or</span> <span class="s1">&#39;/usr/local/flutter&#39;</span>
-    
+        <span class="n">default_path</span> <span class="o">=</span> <span class="n">current_path</span> <span class="ow">or</span> <span class="s2">&quot;/usr/local/flutter&quot;</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
-                <span class="s1">&#39;sdk_path&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Flutter SDK path&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">default_path</span>
-            <span class="p">),</span>
+            <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Flutter SDK path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default_path</span><span class="p">),</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;channel&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;channel&quot;</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Preferred Flutter channel&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;stable&#39;</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;master&#39;</span><span class="p">],</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">flutter_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;channel&#39;</span><span class="p">,</span> <span class="s1">&#39;stable&#39;</span><span class="p">)</span>
-            <span class="p">)</span>
+                <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stable&quot;</span><span class="p">,</span> <span class="s2">&quot;beta&quot;</span><span class="p">,</span> <span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="s2">&quot;master&quot;</span><span class="p">],</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">flutter_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="s2">&quot;stable&quot;</span><span class="p">),</span>
+            <span class="p">),</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">answers</span><span class="p">:</span>
             <span class="n">flutter_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">answers</span><span class="p">)</span>
-            
+
             <span class="c1"># Validate Flutter SDK</span>
-            <span class="k">if</span> <span class="n">validate_flutter_sdk</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;sdk_path&#39;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">validate_flutter_sdk</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">]):</span>
                 <span class="n">show_success</span><span class="p">(</span><span class="s2">&quot;Flutter SDK configuration validated&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">show_warning</span><span class="p">(</span><span class="s2">&quot;Flutter SDK path may be invalid&quot;</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">pass</span>
-    
+
     <span class="k">return</span> <span class="n">flutter_config</span></div>
+
 
 
 <div class="viewcode-block" id="configure_android_sdk">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.configure_android_sdk">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">configure_android_sdk</span><span class="p">(</span><span class="n">android_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure Android SDK settings&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold cyan]🤖 Android SDK Configuration[/bold cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Auto-detect Android SDK</span>
     <span class="n">detected_android</span> <span class="o">=</span> <span class="n">detect_android_sdk</span><span class="p">()</span>
-    <span class="n">current_path</span> <span class="o">=</span> <span class="n">android_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sdk_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    
+    <span class="n">current_path</span> <span class="o">=</span> <span class="n">android_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">detected_android</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[green]✅ Android SDK detected: </span><span class="si">{</span><span class="n">detected_android</span><span class="si">}</span><span class="s2">[/green]&quot;</span><span class="p">)</span>
         <span class="n">default_path</span> <span class="o">=</span> <span class="n">detected_android</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]⚠️  Android SDK not found[/yellow]&quot;</span><span class="p">)</span>
         <span class="n">default_path</span> <span class="o">=</span> <span class="n">current_path</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Library/Android/sdk&quot;</span><span class="p">)</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
-                <span class="s1">&#39;sdk_path&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Android SDK path&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">default_path</span>
-            <span class="p">)</span>
-        <span class="p">]</span>
-        
+        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span><span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Android SDK path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default_path</span><span class="p">)]</span>
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">answers</span><span class="p">:</span>
             <span class="n">android_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">answers</span><span class="p">)</span>
-            
+
             <span class="c1"># Validate Android SDK</span>
-            <span class="k">if</span> <span class="n">validate_android_sdk</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;sdk_path&#39;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">validate_android_sdk</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">]):</span>
                 <span class="n">show_success</span><span class="p">(</span><span class="s2">&quot;Android SDK configuration validated&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">show_warning</span><span class="p">(</span><span class="s2">&quot;Android SDK path may be invalid&quot;</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">pass</span>
-    
+
     <span class="k">return</span> <span class="n">android_config</span></div>
+
 
 
 <div class="viewcode-block" id="configure_ios_settings">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.configure_ios_settings">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">configure_ios_settings</span><span class="p">(</span><span class="n">ios_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure iOS development settings (macOS only)&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold cyan]🍎 iOS Development Configuration[/bold cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Auto-detect Xcode</span>
     <span class="n">detected_xcode</span> <span class="o">=</span> <span class="n">detect_xcode_path</span><span class="p">()</span>
-    <span class="n">current_path</span> <span class="o">=</span> <span class="n">ios_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xcode_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-    
+    <span class="n">current_path</span> <span class="o">=</span> <span class="n">ios_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xcode_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">detected_xcode</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[green]✅ Xcode detected: </span><span class="si">{</span><span class="n">detected_xcode</span><span class="si">}</span><span class="s2">[/green]&quot;</span><span class="p">)</span>
         <span class="n">default_path</span> <span class="o">=</span> <span class="n">detected_xcode</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]⚠️  Xcode not found[/yellow]&quot;</span><span class="p">)</span>
-        <span class="n">default_path</span> <span class="o">=</span> <span class="n">current_path</span> <span class="ow">or</span> <span class="s1">&#39;/Applications/Xcode.app&#39;</span>
-    
+        <span class="n">default_path</span> <span class="o">=</span> <span class="n">current_path</span> <span class="ow">or</span> <span class="s2">&quot;/Applications/Xcode.app&quot;</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;xcode_path&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Xcode.app path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default_path</span><span class="p">),</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
-                <span class="s1">&#39;xcode_path&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Xcode.app path&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">default_path</span>
-            <span class="p">),</span>
-            <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
-                <span class="s1">&#39;team_id&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;team_id&quot;</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Apple Developer Team ID (optional)&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">ios_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;team_id&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="p">)</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">ios_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;team_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">),</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">answers</span><span class="p">:</span>
             <span class="n">ios_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">answers</span><span class="p">)</span>
-            
+
             <span class="c1"># Validate Xcode</span>
-            <span class="k">if</span> <span class="n">validate_xcode</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;xcode_path&#39;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">validate_xcode</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s2">&quot;xcode_path&quot;</span><span class="p">]):</span>
                 <span class="n">show_success</span><span class="p">(</span><span class="s2">&quot;Xcode configuration validated&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">show_warning</span><span class="p">(</span><span class="s2">&quot;Xcode path may be invalid&quot;</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">pass</span>
-    
+
     <span class="k">return</span> <span class="n">ios_config</span></div>
+
 
 
 <div class="viewcode-block" id="configure_general_settings">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.configure_general_settings">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">configure_general_settings</span><span class="p">(</span><span class="n">general_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure general Flow CLI settings&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold cyan]⚙️ General Settings[/bold cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
-                <span class="s1">&#39;default_flavor&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;default_flavor&quot;</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Default flavor (leave empty for none)&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_flavor&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default_flavor&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
-                <span class="s1">&#39;auto_pub_get&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;auto_pub_get&quot;</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Automatically run &#39;flutter pub get&#39; when needed?&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auto_pub_get&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auto_pub_get&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
-                <span class="s1">&#39;verbose_output&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;verbose_output&quot;</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Enable verbose output by default?&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose_output&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbose_output&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">Confirm</span><span class="p">(</span>
-                <span class="s1">&#39;color_output&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;color_output&quot;</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Enable colored output?&quot;</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color_output&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-            <span class="p">)</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">general_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;color_output&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+            <span class="p">),</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">answers</span><span class="p">:</span>
             <span class="n">general_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">answers</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">pass</span>
-    
+
     <span class="k">return</span> <span class="n">general_config</span></div>
+
 
 
 <div class="viewcode-block" id="detect_flutter_sdk">
@@ -419,27 +408,28 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">detect_flutter_sdk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Auto-detect Flutter SDK path&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;which&#39;</span><span class="p">,</span> <span class="s1">&#39;flutter&#39;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;which&quot;</span><span class="p">,</span> <span class="s2">&quot;flutter&quot;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">flutter_bin</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
             <span class="n">flutter_sdk</span> <span class="o">=</span> <span class="n">flutter_bin</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">flutter_sdk</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">pass</span>
-    
+
     <span class="c1"># Check common locations</span>
     <span class="n">common_paths</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;flutter&quot;</span><span class="p">,</span>
         <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;development/flutter&quot;</span><span class="p">,</span>
         <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/usr/local/flutter&quot;</span><span class="p">),</span>
-        <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/opt/flutter&quot;</span><span class="p">)</span>
+        <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/opt/flutter&quot;</span><span class="p">),</span>
     <span class="p">]</span>
-    
+
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">common_paths</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;bin/flutter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    
+
     <span class="k">return</span> <span class="kc">None</span></div>
+
 
 
 <div class="viewcode-block" id="detect_android_sdk">
@@ -447,24 +437,25 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">detect_android_sdk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Auto-detect Android SDK path&quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-    
+
     <span class="c1"># Check environment variable</span>
-    <span class="n">android_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ANDROID_HOME&#39;</span><span class="p">)</span>
+    <span class="n">android_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ANDROID_HOME&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">android_home</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">android_home</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">android_home</span>
-    
+
     <span class="c1"># Check common locations</span>
     <span class="n">common_paths</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Library/Android/sdk&quot;</span><span class="p">,</span>  <span class="c1"># macOS</span>
-        <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Android/Sdk&quot;</span><span class="p">,</span>          <span class="c1"># Linux</span>
-        <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;AppData/Local/Android/Sdk&quot;</span>  <span class="c1"># Windows</span>
+        <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Android/Sdk&quot;</span><span class="p">,</span>  <span class="c1"># Linux</span>
+        <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;AppData/Local/Android/Sdk&quot;</span><span class="p">,</span>  <span class="c1"># Windows</span>
     <span class="p">]</span>
-    
+
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">common_paths</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;platform-tools/adb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    
+
     <span class="k">return</span> <span class="kc">None</span></div>
+
 
 
 <div class="viewcode-block" id="detect_xcode_path">
@@ -472,21 +463,22 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">detect_xcode_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Auto-detect Xcode path (macOS only)&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;xcode-select&#39;</span><span class="p">,</span> <span class="s1">&#39;-p&#39;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;xcode-select&quot;</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">developer_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
             <span class="n">xcode_app</span> <span class="o">=</span> <span class="n">developer_dir</span><span class="o">.</span><span class="n">parent</span>
-            <span class="k">if</span> <span class="n">xcode_app</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.app&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">xcode_app</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.app&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">xcode_app</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">pass</span>
-    
+
     <span class="c1"># Check default location</span>
-    <span class="n">default_xcode</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/Applications/Xcode.app&#39;</span><span class="p">)</span>
+    <span class="n">default_xcode</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/Applications/Xcode.app&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">default_xcode</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">default_xcode</span><span class="p">)</span>
-    
+
     <span class="k">return</span> <span class="kc">None</span></div>
+
 
 
 <div class="viewcode-block" id="validate_flutter_sdk">
@@ -494,10 +486,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_flutter_sdk</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate Flutter SDK path&quot;&quot;&quot;</span>
     <span class="n">flutter_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="n">flutter_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span>
-        <span class="p">(</span><span class="n">flutter_path</span> <span class="o">/</span> <span class="s2">&quot;bin/flutter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
-    <span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">flutter_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">flutter_path</span> <span class="o">/</span> <span class="s2">&quot;bin/flutter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span></div>
+
 
 
 <div class="viewcode-block" id="validate_android_sdk">
@@ -505,10 +495,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_android_sdk</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate Android SDK path&quot;&quot;&quot;</span>
     <span class="n">android_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="n">android_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span>
-        <span class="p">(</span><span class="n">android_path</span> <span class="o">/</span> <span class="s2">&quot;platform-tools&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
-    <span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">android_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">android_path</span> <span class="o">/</span> <span class="s2">&quot;platform-tools&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span></div>
+
 
 
 <div class="viewcode-block" id="validate_xcode">
@@ -517,38 +505,40 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate Xcode path&quot;&quot;&quot;</span>
     <span class="n">xcode_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="n">xcode_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span>
-        <span class="n">xcode_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.app&#39;</span><span class="p">)</span> <span class="ow">and</span>
-        <span class="p">(</span><span class="n">xcode_path</span> <span class="o">/</span> <span class="s2">&quot;Contents/Developer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="n">xcode_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="ow">and</span> <span class="n">xcode_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.app&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="p">(</span><span class="n">xcode_path</span> <span class="o">/</span> <span class="s2">&quot;Contents/Developer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
     <span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="verify_configuration">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.verify_configuration">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">verify_configuration</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify configuration settings&quot;&quot;&quot;</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[cyan]🔍 Verifying Configuration...[/cyan]&quot;</span><span class="p">)</span>
-    
+
     <span class="n">issues</span> <span class="o">=</span> <span class="p">[]</span>
-    
+
     <span class="c1"># Check Flutter SDK</span>
-    <span class="n">flutter_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sdk_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">flutter_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;flutter&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">flutter_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">validate_flutter_sdk</span><span class="p">(</span><span class="n">flutter_path</span><span class="p">):</span>
         <span class="n">issues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Flutter SDK path is invalid&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Check Android SDK</span>
-    <span class="n">android_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;android&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sdk_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">android_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;android&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sdk_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">android_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">validate_android_sdk</span><span class="p">(</span><span class="n">android_path</span><span class="p">):</span>
         <span class="n">issues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Android SDK path is invalid&quot;</span><span class="p">)</span>
-    
+
     <span class="c1"># Check Xcode (macOS only)</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+
     <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
-        <span class="n">xcode_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ios&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xcode_path&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">xcode_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ios&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xcode_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">xcode_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">validate_xcode</span><span class="p">(</span><span class="n">xcode_path</span><span class="p">):</span>
             <span class="n">issues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Xcode path is invalid&quot;</span><span class="p">)</span>
-    
+
     <span class="k">if</span> <span class="n">issues</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[yellow]⚠️  Configuration issues found:[/yellow]&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">issue</span> <span class="ow">in</span> <span class="n">issues</span><span class="p">:</span>
@@ -557,159 +547,160 @@
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[green]✅ Configuration looks good![/green]&quot;</span><span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="set_config_value">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.set_config_value">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_config_value</span><span class="p">(</span><span class="n">key_value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set a configuration value&quot;&quot;&quot;</span>
-    
-    <span class="k">if</span> <span class="s1">&#39;=&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key_value</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key_value</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;Invalid format. Use: key=value&quot;</span><span class="p">)</span>
         <span class="k">return</span>
-    
-    <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">key_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    
+
+    <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">key_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
     <span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
-    
+
     <span class="c1"># Parse nested keys (e.g., flutter.sdk_path)</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
     <span class="n">current</span> <span class="o">=</span> <span class="n">config</span>
-    
+
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current</span><span class="p">:</span>
             <span class="n">current</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-    
+
     <span class="c1"># Convert value type</span>
-    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">]:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">]:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
     <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    
+
     <span class="n">current</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span>
     <span class="n">save_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    
+
     <span class="n">show_success</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Set </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="get_config_value">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.get_config_value">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_config_value</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a configuration value&quot;&quot;&quot;</span>
-    
+
     <span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
-    
+
     <span class="c1"># Parse nested keys</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
     <span class="n">current</span> <span class="o">=</span> <span class="n">config</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
             <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-        
+
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">[/cyan] = [bright_white]</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">[/bright_white]&quot;</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="list_configuration">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.list_configuration">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">list_configuration</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;List all configuration values&quot;&quot;&quot;</span>
-    
+
     <span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
-    
+
     <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;⚙️ Flow CLI Configuration&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Setting&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_white&quot;</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
-    
+
     <span class="k">def</span><span class="w"> </span><span class="nf">add_config_section</span><span class="p">(</span><span class="n">section_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">section_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">section_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">add_config_section</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">full_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">section_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
-                
+
                 <span class="c1"># Determine status</span>
-                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_path&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_path&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
                     <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
                     <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;[green]✅ Valid[/green]&quot;</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;[red]❌ Invalid[/red]&quot;</span>
                 <span class="k">elif</span> <span class="n">value</span><span class="p">:</span>
                     <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;[green]✅ Set[/green]&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;[dim]➖ Empty[/dim]&quot;</span>
-                
+
                 <span class="c1"># Format value</span>
                 <span class="n">display_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="s2">&quot;[dim]&lt;empty&gt;[/dim]&quot;</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">display_value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
                     <span class="n">display_value</span> <span class="o">=</span> <span class="n">display_value</span><span class="p">[:</span><span class="mi">47</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
-                
+
                 <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">full_key</span><span class="p">,</span> <span class="n">display_value</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
-    
+
     <span class="k">for</span> <span class="n">section</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">add_config_section</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;[green]✅ Set[/green]&quot;</span> <span class="k">if</span> <span class="n">data</span> <span class="k">else</span> <span class="s2">&quot;[dim]➖ Empty[/dim]&quot;</span>
             <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">status</span><span class="p">)</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
-    
+
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[dim]Configuration file: </span><span class="si">{</span><span class="n">CONFIG_FILE</span><span class="si">}</span><span class="s2">[/dim]&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="reset_configuration">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.reset_configuration">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">reset_configuration</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset configuration to defaults&quot;&quot;&quot;</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">confirm</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">confirm</span><span class="p">(</span>
-            <span class="s2">&quot;Are you sure you want to reset all configuration to defaults?&quot;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
+            <span class="s2">&quot;Are you sure you want to reset all configuration to defaults?&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
-        
+
         <span class="k">if</span> <span class="n">confirm</span><span class="p">:</span>
             <span class="n">save_config</span><span class="p">(</span><span class="n">DEFAULT_CONFIG</span><span class="p">)</span>
             <span class="n">show_success</span><span class="p">(</span><span class="s2">&quot;Configuration reset to defaults&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[dim]Reset cancelled[/dim]&quot;</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[dim]Reset cancelled[/dim]&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="show_config_menu">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.show_config_menu">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_config_menu</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show interactive configuration menu&quot;&quot;&quot;</span>
-    
+
     <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;🧙 Setup Wizard - Complete configuration setup&quot;</span><span class="p">,</span>
         <span class="s2">&quot;📋 List Settings - View all configuration values&quot;</span><span class="p">,</span>
         <span class="s2">&quot;✏️  Edit Setting - Modify specific setting&quot;</span><span class="p">,</span>
         <span class="s2">&quot;🔄 Reset Config - Reset to defaults&quot;</span><span class="p">,</span>
         <span class="s2">&quot;📁 Open Config File - Open configuration in editor&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;🔙 Back to main menu&quot;</span>
+        <span class="s2">&quot;🔙 Back to main menu&quot;</span><span class="p">,</span>
     <span class="p">]</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;action&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select configuration action:&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span>
-                <span class="n">carousel</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select configuration action:&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span> <span class="n">carousel</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
             <span class="k">return</span>
-            
-        <span class="n">action</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span>
-        
+
+        <span class="n">action</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span>
+
         <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;🧙&quot;</span><span class="p">):</span>
             <span class="n">run_config_wizard</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;📋&quot;</span><span class="p">):</span>
@@ -722,62 +713,57 @@
             <span class="n">open_config_file</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;🔙&quot;</span><span class="p">):</span>
             <span class="k">return</span>
-            
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[dim]Configuration cancelled[/dim]&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="edit_setting_interactive">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.edit_setting_interactive">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">edit_setting_interactive</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Interactive setting editor&quot;&quot;&quot;</span>
-    
+
     <span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">()</span>
-    
+
     <span class="c1"># Build list of all settings</span>
     <span class="n">settings</span> <span class="o">=</span> <span class="p">[]</span>
-    
+
     <span class="k">def</span><span class="w"> </span><span class="nf">collect_settings</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">collect_settings</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    
+
     <span class="n">collect_settings</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;setting&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select setting to edit:&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="n">settings</span>
-            <span class="p">),</span>
-            <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
-                <span class="s1">&#39;value&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Enter new value:&quot;</span>
-            <span class="p">)</span>
+            <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="s2">&quot;setting&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select setting to edit:&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">settings</span><span class="p">),</span>
+            <span class="n">inquirer</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Enter new value:&quot;</span><span class="p">),</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">answers</span><span class="p">:</span>
             <span class="n">set_config_value</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;setting&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="k">pass</span></div>
+
 
 
 <div class="viewcode-block" id="open_config_file">
 <a class="viewcode-back" href="../../../api.html#flow_cli.commands.config.open_config_file">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">open_config_file</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Open configuration file in default editor&quot;&quot;&quot;</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-        
+
         <span class="c1"># Try different editors</span>
-        <span class="n">editors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">,</span> <span class="s1">&#39;subl&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">,</span> <span class="s1">&#39;nano&#39;</span><span class="p">,</span> <span class="s1">&#39;vim&#39;</span><span class="p">]</span>
-        
+        <span class="n">editors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="s2">&quot;subl&quot;</span><span class="p">,</span> <span class="s2">&quot;atom&quot;</span><span class="p">,</span> <span class="s2">&quot;nano&quot;</span><span class="p">,</span> <span class="s2">&quot;vim&quot;</span><span class="p">]</span>
+
         <span class="k">for</span> <span class="n">editor</span> <span class="ow">in</span> <span class="n">editors</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">editor</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">)],</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -785,17 +771,17 @@
                 <span class="k">return</span>
             <span class="k">except</span> <span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">):</span>
                 <span class="k">continue</span>
-        
+
         <span class="c1"># Fallback to system default</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;darwin&#39;</span><span class="p">:</span>  <span class="c1"># macOS</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">)])</span>
-        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>  <span class="c1"># Windows</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">)],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span><span class="p">:</span>  <span class="c1"># macOS</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>  <span class="c1"># Windows</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">)],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Linux</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;xdg-open&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">)])</span>
-        
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;xdg-open&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">)])</span>
+
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[green]Opened configuration file[/green]&quot;</span><span class="p">)</span>
-    
+
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to open configuration file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[dim]Configuration file location: </span><span class="si">{</span><span class="n">CONFIG_FILE</span><span class="si">}</span><span class="s2">[/dim]&quot;</span><span class="p">)</span></div>

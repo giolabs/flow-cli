@@ -80,17 +80,19 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.generate.splash</span><span class="w"> </span><span class="kn">import</span> <span class="n">splash_command</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.generate.branding</span><span class="w"> </span><span class="kn">import</span> <span class="n">branding_command</span>
 
+
 <span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">invoke_without_command</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">pass_context</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_group</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    🎨 Asset generation tools</span>
-<span class="sd">    </span>
+
 <span class="sd">    Generate app icons, splash screens, and branding assets for your</span>
 <span class="sd">    Flutter project with support for multiple flavors and platforms.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">invoked_subcommand</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">show_generate_menu</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="show_generate_menu">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.generate.main.show_generate_menu">[docs]</a>
@@ -99,33 +101,30 @@
     <span class="kn">import</span><span class="w"> </span><span class="nn">inquirer</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_section_header</span>
-    
+
     <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
     <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;Asset Generation Tools&quot;</span><span class="p">,</span> <span class="s2">&quot;🎨&quot;</span><span class="p">)</span>
-    
+
     <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;🎯 Icons - Generate app icons&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;💧 Splash - Generate splash screens&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;💧 Splash - Generate splash screens&quot;</span><span class="p">,</span>
         <span class="s2">&quot;🎨 Branding - Complete branding package&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;🔙 Back to main menu&quot;</span>
+        <span class="s2">&quot;🔙 Back to main menu&quot;</span><span class="p">,</span>
     <span class="p">]</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;action&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select generation action:&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span>
-                <span class="n">carousel</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select generation action:&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span> <span class="n">carousel</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
             <span class="k">return</span>
-            
-        <span class="n">action</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span>
-        
+
+        <span class="n">action</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span>
+
         <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;🎯&quot;</span><span class="p">):</span>
             <span class="n">ctx</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">icons_command</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;💧&quot;</span><span class="p">):</span>
@@ -134,16 +133,17 @@
             <span class="n">ctx</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">branding_command</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;🔙&quot;</span><span class="p">):</span>
             <span class="k">return</span>
-            
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[dim]Returning to main menu...[/dim]&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 
+
 <span class="c1"># Add subcommands</span>
-<span class="n">generate_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">icons_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;icons&#39;</span><span class="p">)</span>
-<span class="n">generate_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">splash_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;splash&#39;</span><span class="p">)</span>
-<span class="n">generate_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">branding_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;branding&#39;</span><span class="p">)</span>
+<span class="n">generate_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">icons_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;icons&quot;</span><span class="p">)</span>
+<span class="n">generate_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">splash_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;splash&quot;</span><span class="p">)</span>
+<span class="n">generate_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">branding_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;branding&quot;</span><span class="p">)</span>
 </pre></div>
 
            </div>

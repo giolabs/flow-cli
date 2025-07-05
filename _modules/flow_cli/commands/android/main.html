@@ -84,17 +84,19 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.android.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">devices_command</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.android.flavors</span><span class="w"> </span><span class="kn">import</span> <span class="n">flavors_command</span>
 
+
 <span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">invoke_without_command</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">pass_context</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">android_group</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    🤖 Android development tools</span>
-<span class="sd">    </span>
+
 <span class="sd">    Comprehensive set of tools for Android Flutter development including</span>
 <span class="sd">    building APKs, running on devices, managing flavors, and more.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">invoked_subcommand</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">show_android_menu</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="show_android_menu">
 <a class="viewcode-back" href="../../../../api.html#flow_cli.commands.android.main.show_android_menu">[docs]</a>
@@ -103,35 +105,32 @@
     <span class="kn">import</span><span class="w"> </span><span class="nn">inquirer</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_section_header</span>
-    
+
     <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
     <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;Android Development Tools&quot;</span><span class="p">,</span> <span class="s2">&quot;🤖&quot;</span><span class="p">)</span>
-    
+
     <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;🏗️  Build - Build Android APK/AAB&quot;</span><span class="p">,</span>
         <span class="s2">&quot;▶️  Run - Run on Android device/emulator&quot;</span><span class="p">,</span>
         <span class="s2">&quot;📱 Install - Install APK on devices&quot;</span><span class="p">,</span>
         <span class="s2">&quot;🔌 Devices - Manage Android devices&quot;</span><span class="p">,</span>
         <span class="s2">&quot;🎨 Flavors - View available flavors&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;🔙 Back to main menu&quot;</span>
+        <span class="s2">&quot;🔙 Back to main menu&quot;</span><span class="p">,</span>
     <span class="p">]</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
-                <span class="s1">&#39;action&#39;</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select Android action:&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span>
-                <span class="n">carousel</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select Android action:&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span> <span class="n">carousel</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>
         <span class="p">]</span>
-        
+
         <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
             <span class="k">return</span>
-            
-        <span class="n">action</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span>
-        
+
+        <span class="n">action</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span>
+
         <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;🏗️&quot;</span><span class="p">):</span>
             <span class="n">ctx</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">build_command</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;▶️&quot;</span><span class="p">):</span>
@@ -144,18 +143,19 @@
             <span class="n">ctx</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">flavors_command</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;🔙&quot;</span><span class="p">):</span>
             <span class="k">return</span>
-            
+
     <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[dim]Returning to main menu...[/dim]&quot;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 
+
 <span class="c1"># Add subcommands</span>
-<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">build_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;build&#39;</span><span class="p">)</span>
-<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">run_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;run&#39;</span><span class="p">)</span>
-<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">install_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;install&#39;</span><span class="p">)</span>
-<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">devices_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;devices&#39;</span><span class="p">)</span>
-<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">flavors_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;flavors&#39;</span><span class="p">)</span>
+<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">build_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;build&quot;</span><span class="p">)</span>
+<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">run_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;run&quot;</span><span class="p">)</span>
+<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">install_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;install&quot;</span><span class="p">)</span>
+<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">devices_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;devices&quot;</span><span class="p">)</span>
+<span class="n">android_group</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">flavors_command</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;flavors&quot;</span><span class="p">)</span>
 </pre></div>
 
            </div>
