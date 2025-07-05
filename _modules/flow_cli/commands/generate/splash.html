@@ -314,12 +314,14 @@
     <span class="c1"># Platform settings</span>
     <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;android&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]:</span>
         <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
-        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android_12&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
-            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">splash_path</span><span class="p">,</span>
-            <span class="s2">&quot;icon_background_color&quot;</span><span class="p">:</span> <span class="n">background_color</span><span class="p">,</span>
-            <span class="s2">&quot;image_dark&quot;</span><span class="p">:</span> <span class="n">splash_path</span><span class="p">,</span>
-            <span class="s2">&quot;icon_background_color_dark&quot;</span><span class="p">:</span> <span class="n">background_color</span><span class="p">,</span>
-        <span class="p">})</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android_12&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">splash_path</span><span class="p">,</span>
+                <span class="s2">&quot;icon_background_color&quot;</span><span class="p">:</span> <span class="n">background_color</span><span class="p">,</span>
+                <span class="s2">&quot;image_dark&quot;</span><span class="p">:</span> <span class="n">splash_path</span><span class="p">,</span>
+                <span class="s2">&quot;icon_background_color_dark&quot;</span><span class="p">:</span> <span class="n">background_color</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
 

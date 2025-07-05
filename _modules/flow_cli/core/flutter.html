@@ -220,7 +220,12 @@
 <a class="viewcode-back" href="../../../api.html#flow_cli.core.flutter.FlutterProject.get_build_outputs">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_build_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get build output files (APKs, IPAs, etc.)&quot;&quot;&quot;</span>
-        <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;android_apks&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;android_bundles&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;ios_apps&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;web_builds&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;android_apks&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;android_bundles&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;ios_apps&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;web_builds&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="p">}</span>
 
         <span class="c1"># Android APKs</span>
         <span class="n">apk_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;build&quot;</span> <span class="o">/</span> <span class="s2">&quot;app&quot;</span> <span class="o">/</span> <span class="s2">&quot;outputs&quot;</span> <span class="o">/</span> <span class="s2">&quot;flutter-apk&quot;</span>
