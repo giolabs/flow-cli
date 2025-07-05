@@ -75,22 +75,22 @@
 <span class="sd">Splash screen generation command - Generate splash screens using flutter_native_splash</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inquirer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.progress</span><span class="w"> </span><span class="kn">import</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">SpinnerColumn</span><span class="p">,</span> <span class="n">TextColumn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rich</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.flutter</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlutterProject</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_section_header</span><span class="p">,</span> <span class="n">show_success</span><span class="p">,</span> <span class="n">show_error</span><span class="p">,</span> <span class="n">show_warning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_error</span><span class="p">,</span> <span class="n">show_section_header</span><span class="p">,</span> <span class="n">show_success</span><span class="p">,</span> <span class="n">show_warning</span>
 
 <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
 
@@ -301,7 +301,7 @@
     <span class="c1"># Get background color from flavor config or use default</span>
     <span class="n">background_color</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">flavor_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mainColor&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;FFFFFF&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="n">background_color</span><span class="p">,</span>
             <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">splash_path</span><span class="p">,</span>
@@ -313,19 +313,23 @@
 
     <span class="c1"># Platform settings</span>
     <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;android&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android_12&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android_12&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
             <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">splash_path</span><span class="p">,</span>
             <span class="s2">&quot;icon_background_color&quot;</span><span class="p">:</span> <span class="n">background_color</span><span class="p">,</span>
             <span class="s2">&quot;image_dark&quot;</span><span class="p">:</span> <span class="n">splash_path</span><span class="p">,</span>
             <span class="s2">&quot;icon_background_color_dark&quot;</span><span class="p">:</span> <span class="n">background_color</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;android&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
 
     <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ios&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;ios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;ios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;ios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
 
     <span class="c1"># Web configuration</span>
-    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;web&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;flutter_native_splash&quot;</span><span class="p">][</span><span class="s2">&quot;web&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
 
     <span class="k">return</span> <span class="n">config</span></div>
 

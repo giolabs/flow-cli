@@ -76,9 +76,10 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.generate.branding</span><span class="w"> </span><span class="kn">import</span> <span class="n">branding_command</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.generate.icons</span><span class="w"> </span><span class="kn">import</span> <span class="n">icons_command</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.generate.splash</span><span class="w"> </span><span class="kn">import</span> <span class="n">splash_command</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.generate.branding</span><span class="w"> </span><span class="kn">import</span> <span class="n">branding_command</span>
 
 
 <span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">invoke_without_command</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -100,6 +101,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show interactive generate menu&quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">inquirer</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+
     <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_section_header</span>
 
     <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>

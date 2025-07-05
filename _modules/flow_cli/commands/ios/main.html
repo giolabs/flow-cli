@@ -76,12 +76,13 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.ios.devices</span><span class="w"> </span><span class="kn">import</span> <span class="n">devices_command</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.ios.run</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_command</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.ios.flavors</span><span class="w"> </span><span class="kn">import</span> <span class="n">flavors_command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.commands.ios.run</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_command</span>
 
 <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
 
@@ -113,6 +114,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">show_ios_menu</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show interactive iOS menu&quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">inquirer</span>
+
     <span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_section_header</span>
 
     <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;iOS Development Tools&quot;</span><span class="p">,</span> <span class="s2">&quot;🍎&quot;</span><span class="p">)</span>
