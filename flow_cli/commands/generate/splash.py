@@ -2,22 +2,22 @@
 Splash screen generation command - Generate splash screens using flutter_native_splash
 """
 
-import subprocess
 import json
-import yaml
+import subprocess
 from pathlib import Path
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
 import click
 import inquirer
+import yaml
+from rich import box
 from rich.console import Console
+from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
-from rich.panel import Panel
-from rich import box
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 
@@ -214,7 +214,7 @@ def create_splash_config(
     # Get background color from flavor config or use default
     background_color = f"#{flavor_config.get('mainColor', 'FFFFFF').lstrip('#')}"
 
-    config = {
+    config: Dict = {
         "flutter_native_splash": {
             "color": background_color,
             "image": splash_path,
@@ -226,19 +226,23 @@ def create_splash_config(
 
     # Platform settings
     if platform in ["android", "both"]:
-        config["flutter_native_splash"]["android"] = True
-        config["flutter_native_splash"]["android_12"] = {
+        config["flutter_native_splash"]["android"] = "true"
+        config["flutter_native_splash"]["android_12"] = json.dumps({
             "image": splash_path,
             "icon_background_color": background_color,
             "image_dark": splash_path,
             "icon_background_color_dark": background_color,
-        }
+        })
+    else:
+        config["flutter_native_splash"]["android"] = "false"
 
     if platform in ["ios", "both"]:
-        config["flutter_native_splash"]["ios"] = True
+        config["flutter_native_splash"]["ios"] = "true"
+    else:
+        config["flutter_native_splash"]["ios"] = "false"
 
     # Web configuration
-    config["flutter_native_splash"]["web"] = False
+    config["flutter_native_splash"]["web"] = "false"
 
     return config
 

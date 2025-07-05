@@ -3,9 +3,10 @@ Flutter project detection and management
 """
 
 import subprocess
-import yaml
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Any, Dict, List, Optional
+
+import yaml
 
 
 class FlutterProject:
@@ -20,7 +21,7 @@ class FlutterProject:
     def name(self) -> str:
         """Get project name from pubspec.yaml"""
         if self.pubspec_data:
-            return self.pubspec_data.get("name", self.path.name)
+            return str(self.pubspec_data.get("name", self.path.name))
         return self.path.name
 
     @property
@@ -93,13 +94,15 @@ class FlutterProject:
     def get_dependencies(self) -> Dict[str, Any]:
         """Get project dependencies"""
         if self.pubspec_data:
-            return self.pubspec_data.get("dependencies", {})
+            deps = self.pubspec_data.get("dependencies", {})
+            return deps if isinstance(deps, dict) else {}
         return {}
 
     def get_dev_dependencies(self) -> Dict[str, Any]:
         """Get project dev dependencies"""
         if self.pubspec_data:
-            return self.pubspec_data.get("dev_dependencies", {})
+            deps = self.pubspec_data.get("dev_dependencies", {})
+            return deps if isinstance(deps, dict) else {}
         return {}
 
     def has_dependency(self, package_name: str) -> bool:
@@ -128,7 +131,7 @@ class FlutterProject:
 
     def get_build_outputs(self) -> Dict[str, List[Path]]:
         """Get build output files (APKs, IPAs, etc.)"""
-        outputs = {"android_apks": [], "android_bundles": [], "ios_apps": [], "web_builds": []}
+        outputs: Dict[str, List[Path]] = {"android_apks": [], "android_bundles": [], "ios_apps": [], "web_builds": []}
 
         # Android APKs
         apk_dir = self.path / "build" / "app" / "outputs" / "flutter-apk"

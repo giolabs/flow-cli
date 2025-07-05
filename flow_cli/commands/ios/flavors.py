@@ -3,19 +3,19 @@ iOS flavors command - View and manage iOS flavors and schemes
 """
 
 import json
-import subprocess
 import platform
+import subprocess
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 import click
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
 from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 
@@ -244,7 +244,8 @@ def extract_plist_data(plist_path: Path) -> Dict:
         )
 
         if result.returncode == 0:
-            return json.loads(result.stdout)
+            data = json.loads(result.stdout)
+            return data if isinstance(data, dict) else {}
 
     except Exception:
         pass

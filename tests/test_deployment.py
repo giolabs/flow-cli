@@ -1,21 +1,24 @@
 """
 Tests for deployment commands
 """
+# mypy: ignore-errors
+
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+from unittest.mock import Mock, mock_open, patch
 
 import pytest
-from unittest.mock import patch, Mock, mock_open
-from pathlib import Path
 from click.testing import CliRunner
 
-from flow_cli.commands.deployment.main import deployment_group
-from flow_cli.commands.deployment.setup import setup_fastlane_command
 from flow_cli.commands.deployment.keystore import keystore_command
+from flow_cli.commands.deployment.main import deployment_group
 from flow_cli.commands.deployment.release import release_command
+from flow_cli.commands.deployment.setup import setup_fastlane_command
 from tests.conftest import (
-    assert_command_success,
     assert_command_failure,
-    assert_file_exists,
+    assert_command_success,
     assert_file_contains,
+    assert_file_exists,
     assert_performance_under_threshold,
 )
 

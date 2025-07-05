@@ -3,14 +3,14 @@ Android devices command - Manage Android devices and emulators
 """
 
 import subprocess
-from typing import List, Dict
+from typing import Dict, List
 
 import click
+from rich import box
 from rich.console import Console
 from rich.table import Table
-from rich import box
 
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success
 
 console = Console()
 

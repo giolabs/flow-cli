@@ -1,0 +1,16 @@
+{
+  "keystore": {
+    "path": "",
+    "password": "",
+    "alias": "",
+    "key_password": ""
+  },
+  "ios": {
+    "team_id": "",
+    "bundle_id_prefix": "com.giolabs"
+  },
+  "android": {
+    "package_name_prefix": "com.giolabs"
+  },
+  "config_version": "1.0"
+}

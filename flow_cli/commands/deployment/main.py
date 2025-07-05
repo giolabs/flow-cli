@@ -5,9 +5,9 @@ Deployment commands group - Release and deployment tools with Fastlane
 import click
 from rich.console import Console
 
-from flow_cli.commands.deployment.setup import setup_fastlane_command
-from flow_cli.commands.deployment.release import release_command
 from flow_cli.commands.deployment.keystore import keystore_command
+from flow_cli.commands.deployment.release import release_command
+from flow_cli.commands.deployment.setup import setup_fastlane_command
 
 console = Console()
 
@@ -29,6 +29,7 @@ def deployment_group(ctx: click.Context) -> None:
 def show_deployment_menu(ctx: click.Context) -> None:
     """Show interactive deployment menu"""
     import inquirer
+
     from flow_cli.core.ui.banner import show_section_header
 
     show_section_header("Deployment & Release Tools", "🚀")
@@ -85,10 +86,11 @@ def setup_cicd_interactive(ctx: click.Context) -> None:
 
 def show_deployment_status() -> None:
     """Show current deployment configuration status"""
-    from flow_cli.core.flutter import FlutterProject
-    from flow_cli.core.ui.banner import show_section_header, show_error
-    from rich.table import Table
     from rich import box
+    from rich.table import Table
+
+    from flow_cli.core.flutter import FlutterProject
+    from flow_cli.core.ui.banner import show_error, show_section_header
 
     project = FlutterProject.find_project()
     if not project:

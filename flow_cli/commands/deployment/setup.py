@@ -2,20 +2,20 @@
 Fastlane setup command - Configure Fastlane for Flutter project
 """
 
-import subprocess
 import json
+import subprocess
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 import click
 import inquirer
+from rich import box
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich import box
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 
@@ -114,7 +114,8 @@ all changes before merging.
 def confirm_proceed() -> bool:
     """Confirm user wants to proceed with setup"""
     try:
-        return inquirer.confirm("Do you want to proceed with Fastlane setup?", default=True)
+        answer = inquirer.confirm("Do you want to proceed with Fastlane setup?", default=True)
+        return bool(answer)
     except KeyboardInterrupt:
         return False
 
@@ -653,3 +654,38 @@ def show_next_steps(project: FlutterProject) -> None:
 
     panel = Panel(next_steps, title="🚀 Next Steps", border_style="green", box=box.ROUNDED)
     console.print(panel)
+
+
+def get_build_targets(ios_dir: Path) -> Optional[List[str]]:
+    """Get available build targets from Xcode project"""
+    try:
+        result = subprocess.run(
+            ["xcodebuild", "-list", "-project", str(ios_dir / "Runner.xcodeproj")],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            cwd=ios_dir,
+        )
+
+        if result.returncode == 0:
+            lines = result.stdout.split("\n")
+            targets = []
+            in_targets = False
+
+            for line in lines:
+                line = line.strip()
+                if line == "Targets:":
+                    in_targets = True
+                    continue
+                elif line == "Build Configurations:" or line == "Schemes:":
+                    in_targets = False
+                    continue
+                elif in_targets and line:
+                    targets.append(line)
+
+            return targets
+
+    except Exception:
+        pass
+
+    return None

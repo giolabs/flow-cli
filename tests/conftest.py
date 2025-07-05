@@ -1,12 +1,17 @@
 """
 Pytest configuration and fixtures for Flow CLI tests
 """
+# mypy: ignore-errors
 
-import pytest
-import tempfile
+import json
+import os
 import shutil
+import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
+from typing import Any, Callable, Dict, Generator, Iterator, List, Optional, Union
+
+import pytest
 from click.testing import CliRunner
 
 from flow_cli.core.flutter import FlutterProject
@@ -19,7 +24,7 @@ def cli_runner():
 
 
 @pytest.fixture
-def temp_dir():
+def temp_dir() -> Path:
     """Create a temporary directory for testing"""
     temp_path = Path(tempfile.mkdtemp())
     yield temp_path

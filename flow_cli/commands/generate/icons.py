@@ -4,20 +4,20 @@ Icons generation command - Generate app icons using flutter_launcher_icons
 
 import subprocess
 import sys
-import yaml
 from pathlib import Path
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
 import click
 import inquirer
+import yaml
+from rich import box
 from rich.console import Console
+from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
-from rich.panel import Panel
-from rich import box
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 

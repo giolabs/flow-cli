@@ -9,21 +9,21 @@ from pathlib import Path
 from typing import Optional
 
 import click
+from rich import box
 from rich.console import Console
 from rich.panel import Panel
-from rich.text import Text
 from rich.table import Table
-from rich import box
+from rich.text import Text
 
-from flow_cli.core.ui.banner import show_banner
-from flow_cli.core.flutter import FlutterProject
-from flow_cli.commands.doctor import doctor_command
 from flow_cli.commands.analyze import analyze_command
 from flow_cli.commands.android.main import android_group
-from flow_cli.commands.ios.main import ios_group
-from flow_cli.commands.generate.main import generate_group
 from flow_cli.commands.config import config_command
 from flow_cli.commands.deployment.main import deployment_group
+from flow_cli.commands.doctor import doctor_command
+from flow_cli.commands.generate.main import generate_group
+from flow_cli.commands.ios.main import ios_group
+from flow_cli.core.flutter import FlutterProject
+from flow_cli.core.ui.banner import show_banner
 
 console = Console()
 
@@ -54,7 +54,7 @@ def cli(ctx: click.Context, version: bool, verbose: bool) -> None:
 
 def show_version() -> None:
     """Show version information with beautiful formatting"""
-    from flow_cli import __version__, __author__
+    from flow_cli import __author__, __version__
 
     version_panel = Panel(
         f"[bold cyan]Flow CLI[/bold cyan] v{__version__}\n"

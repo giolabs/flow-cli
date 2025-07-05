@@ -12,13 +12,13 @@ from typing import Optional
 
 import click
 import inquirer
-from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich.panel import Panel
 from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 

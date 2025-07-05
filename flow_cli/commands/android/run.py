@@ -3,14 +3,14 @@ Android run command - Run Flutter app on Android devices
 """
 
 import subprocess
-from typing import Optional, List, Dict
+from typing import Dict, List, Optional
 
 import click
 import inquirer
 from rich.console import Console
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success
 
 console = Console()
 

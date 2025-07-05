@@ -3,9 +3,10 @@ Generate commands group - Asset generation tools
 """
 
 import click
+
+from flow_cli.commands.generate.branding import branding_command
 from flow_cli.commands.generate.icons import icons_command
 from flow_cli.commands.generate.splash import splash_command
-from flow_cli.commands.generate.branding import branding_command
 
 
 @click.group(invoke_without_command=True)
@@ -25,6 +26,7 @@ def show_generate_menu(ctx: click.Context) -> None:
     """Show interactive generate menu"""
     import inquirer
     from rich.console import Console
+
     from flow_cli.core.ui.banner import show_section_header
 
     console = Console()

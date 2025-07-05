@@ -3,12 +3,13 @@ iOS commands group - iOS development tools
 """
 
 import platform
+
 import click
 from rich.console import Console
 
 from flow_cli.commands.ios.devices import devices_command
-from flow_cli.commands.ios.run import run_command
 from flow_cli.commands.ios.flavors import flavors_command
+from flow_cli.commands.ios.run import run_command
 
 console = Console()
 
@@ -38,6 +39,7 @@ def ios_group(ctx: click.Context) -> None:
 def show_ios_menu(ctx: click.Context) -> None:
     """Show interactive iOS menu"""
     import inquirer
+
     from flow_cli.core.ui.banner import show_section_header
 
     show_section_header("iOS Development Tools", "🍎")

@@ -5,18 +5,18 @@ Android build command - Build Android APKs and AABs
 import subprocess
 import sys
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional
 
 import click
 import inquirer
-from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
-from rich.table import Table
-from rich.panel import Panel
 from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.progress import BarColumn, Progress, SpinnerColumn, TaskProgressColumn, TextColumn
+from rich.table import Table
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 
@@ -192,24 +192,25 @@ def build_single_flavor(
             output_lines = []
 
             # Read output line by line
-            for line in iter(process.stdout.readline, ""):
-                if line:
-                    output_lines.append(line.strip())
+            if process.stdout is not None:
+                for line in iter(process.stdout.readline, ""):
+                    if line:
+                        output_lines.append(line.strip())
 
-                    # Update progress based on build stages
-                    if "Initializing gradle" in line:
-                        progress.update(task, completed=10)
-                    elif "Resolving dependencies" in line:
-                        progress.update(task, completed=25)
-                    elif "Compiling" in line:
-                        progress.update(task, completed=50)
-                    elif "Building" in line:
-                        progress.update(task, completed=75)
-                    elif "Built" in line:
-                        progress.update(task, completed=100)
+                        # Update progress based on build stages
+                        if "Initializing gradle" in line:
+                            progress.update(task, completed=10)
+                        elif "Resolving dependencies" in line:
+                            progress.update(task, completed=25)
+                        elif "Compiling" in line:
+                            progress.update(task, completed=50)
+                        elif "Building" in line:
+                            progress.update(task, completed=75)
+                        elif "Built" in line:
+                            progress.update(task, completed=100)
 
-                    if verbose:
-                        console.print(f"[dim]{line.strip()}[/dim]")
+                        if verbose:
+                            console.print(f"[dim]{line.strip()}[/dim]")
 
             process.wait()
 

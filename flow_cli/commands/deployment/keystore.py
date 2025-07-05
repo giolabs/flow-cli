@@ -2,23 +2,23 @@
 Keystore generation command - Generate signing certificates for Android and iOS
 """
 
-import subprocess
 import json
-from pathlib import Path
-from typing import Optional, Dict, Any
 import secrets
 import string
+import subprocess
+from pathlib import Path
+from typing import Any, Dict, Optional
 
 import click
 import inquirer
+from rich import box
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
-from rich import box
 
 from flow_cli.core.flutter import FlutterProject
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 
@@ -580,3 +580,18 @@ def show_security_instructions(keys_dir: Path) -> None:
         instructions, title="🔐 Security Instructions", border_style="yellow", box=box.ROUNDED
     )
     console.print(panel)
+
+
+def load_flavor_config(project: FlutterProject, flavor: str) -> Optional[Dict[str, Any]]:
+    """Load flavor configuration from config.json"""
+    config_file = project.path / "assets" / "configs" / flavor / "config.json"
+
+    if config_file.exists():
+        try:
+            with open(config_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data if isinstance(data, dict) else None
+        except Exception:
+            pass
+
+    return None

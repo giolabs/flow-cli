@@ -3,19 +3,19 @@ Configuration command - Manage Flow CLI global configuration
 """
 
 import json
-import yaml
 import subprocess
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 import click
 import inquirer
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
+import yaml
 from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
 
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 
@@ -451,12 +451,15 @@ def set_config_value(key_value: str) -> None:
         current = current[k]
 
     # Convert value type
+    converted_value: Any = value
     if value.lower() in ["true", "false"]:
-        value = value.lower() == "true"
+        converted_value = value.lower() == "true"
     elif value.isdigit():
-        value = int(value)
+        converted_value = int(value)
+    else:
+        converted_value = value
 
-    current[keys[-1]] = value
+    current[keys[-1]] = converted_value
     save_config(config)
 
     show_success(f"Set {key} = {value}")
@@ -491,7 +494,7 @@ def list_configuration() -> None:
     table.add_column("Value", style="bright_white")
     table.add_column("Status", style="bold")
 
-    def add_config_section(section_name: str, section_data: Dict, prefix: str = ""):
+    def add_config_section(section_name: str, section_data: Dict, prefix: str = "") -> None:
         for key, value in section_data.items():
             if isinstance(value, dict):
                 add_config_section(f"{section_name}.{key}", value, prefix)
@@ -594,7 +597,7 @@ def edit_setting_interactive() -> None:
     # Build list of all settings
     settings = []
 
-    def collect_settings(data: Dict, prefix: str = ""):
+    def collect_settings(data: Dict, prefix: str = "") -> None:
         for key, value in data.items():
             if isinstance(value, dict):
                 collect_settings(value, f"{prefix}{key}.")

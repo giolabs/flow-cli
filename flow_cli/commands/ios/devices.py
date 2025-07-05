@@ -2,18 +2,18 @@
 iOS devices command - Manage iOS devices and simulators
 """
 
-import subprocess
 import json
 import platform
-from typing import List, Dict, Optional
+import subprocess
+from typing import Dict, List, Optional
 
 import click
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
 from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
 
-from flow_cli.core.ui.banner import show_section_header, show_success, show_error, show_warning
+from flow_cli.core.ui.banner import show_error, show_section_header, show_success, show_warning
 
 console = Console()
 
@@ -199,7 +199,7 @@ def display_simulators(simulators: List[Dict]) -> None:
     """Display iOS simulators grouped by runtime"""
 
     # Group simulators by runtime
-    by_runtime = {}
+    by_runtime: Dict[str, List[Dict]] = {}
     for sim in simulators:
         runtime = sim["runtime"]
         if runtime not in by_runtime:

@@ -1,12 +1,22 @@
 """
 Tests for the doctor command
 """
+# mypy: ignore-errors
+
+from unittest.mock import Mock, patch
+from pathlib import Path
+from typing import Any, Dict, List
 
 import pytest
-from unittest.mock import patch, Mock
 from click.testing import CliRunner
 
-from flow_cli.commands.doctor import doctor_command
+from flow_cli.commands.doctor import (
+    check_android_setup,
+    check_flutter_setup,
+    check_git_setup,
+    check_ios_setup,
+    doctor_command,
+)
 from tests.conftest import assert_command_success, assert_performance_under_threshold
 
 
@@ -205,3 +215,164 @@ class TestDoctorCommand:
             assert_command_success(result)
             # Should validate config paths
             assert "configuration" in result.output.lower()
+
+
+@pytest.mark.parametrize("flutter_exists", [True, False])
+def test_check_flutter_setup(monkeypatch: Any, flutter_exists: bool) -> None:
+    """Test Flutter setup check"""
+
+    def mock_which(cmd: str) -> str:
+        if cmd == "flutter" and flutter_exists:
+            return "/usr/local/bin/flutter"
+        return ""
+
+    monkeypatch.setattr("shutil.which", mock_which)
+
+    result = check_flutter_setup()
+
+    assert "flutter_installed" in result
+    assert result["flutter_installed"] == flutter_exists
+
+
+def test_check_android_setup(monkeypatch: Any) -> None:
+    """Test Android setup check"""
+
+    def mock_which(cmd: str) -> str:
+        if cmd in ["adb", "sdkmanager"]:
+            return f"/android/sdk/platform-tools/{cmd}"
+        return ""
+
+    def mock_environ_get(key: str, default: str = None) -> str:
+        if key == "ANDROID_HOME":
+            return "/android/sdk"
+        elif key == "ANDROID_SDK_ROOT":
+            return "/android/sdk"
+        return default if default is not None else ""
+
+    monkeypatch.setattr("shutil.which", mock_which)
+    monkeypatch.setattr("os.environ.get", mock_environ_get)
+
+    result = check_android_setup()
+
+    assert "android_installed" in result
+    assert result["android_installed"] is True
+
+
+def test_check_ios_setup_on_macos(monkeypatch: Any) -> None:
+    """Test iOS setup check on macOS"""
+
+    # Mock platform.system to return 'Darwin'
+    monkeypatch.setattr("platform.system", lambda: "Darwin")
+
+    def mock_which(cmd: str) -> str:
+        if cmd in ["xcodebuild", "xcrun"]:
+            return f"/usr/bin/{cmd}"
+        return ""
+
+    monkeypatch.setattr("shutil.which", mock_which)
+
+    result = check_ios_setup()
+
+    assert "ios_development_possible" in result
+    assert result["ios_development_possible"] is True
+
+
+def test_check_ios_setup_non_macos(monkeypatch: Any) -> None:
+    """Test iOS setup check on non-macOS"""
+
+    # Mock platform.system to return 'Linux'
+    monkeypatch.setattr("platform.system", lambda: "Linux")
+
+    result = check_ios_setup()
+
+    assert "ios_development_possible" in result
+    assert result["ios_development_possible"] is False
+    assert "requires_macos" in result
+
+
+def test_check_git_setup_installed(monkeypatch: Any) -> None:
+    """Test Git setup check with Git installed"""
+
+    def mock_which(cmd: str) -> str:
+        if cmd == "git":
+            return "/usr/bin/git"
+        return ""
+
+    monkeypatch.setattr("shutil.which", mock_which)
+
+    result = check_git_setup()
+
+    assert "git_installed" in result
+    assert result["git_installed"] is True
+
+
+def test_check_git_setup_not_installed(monkeypatch: Any) -> None:
+    """Test Git setup check with Git not installed"""
+
+    def mock_which(cmd: str) -> str:
+        return ""
+
+    monkeypatch.setattr("shutil.which", mock_which)
+
+    result = check_git_setup()
+
+    assert "git_installed" in result
+    assert result["git_installed"] is False
+
+
+def test_doctor_command_success(monkeypatch: Any, capsys: Any) -> None:
+    """Test doctor command with all checks passing"""
+
+    # Mock all check functions
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_flutter_setup",
+        lambda: {"flutter_installed": True, "version": "3.13.1"},
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_android_setup",
+        lambda: {"android_installed": True, "sdk_path": "/android/sdk"},
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_ios_setup",
+        lambda: {"ios_development_possible": True, "xcode_installed": True},
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_git_setup", lambda: {"git_installed": True}
+    )
+
+    # Run doctor command
+    doctor_command()
+
+    # Check output
+    captured = capsys.readouterr()
+    assert "Environment Check" in captured.out
+    assert "✅" in captured.out  # Success indicators
+
+
+def test_doctor_command_failures(monkeypatch: Any, capsys: Any) -> None:
+    """Test doctor command with failing checks"""
+
+    # Mock check functions with failures
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_flutter_setup",
+        lambda: {"flutter_installed": False, "error": "Flutter not found"},
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_android_setup",
+        lambda: {"android_installed": False, "error": "Android SDK not found"},
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_ios_setup",
+        lambda: {"ios_development_possible": False, "requires_macos": True},
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_git_setup", lambda: {"git_installed": False}
+    )
+
+    # Run doctor command
+    doctor_command()
+
+    # Check output
+    captured = capsys.readouterr()
+    assert "Environment Check" in captured.out
+    assert "❌" in captured.out  # Failure indicators

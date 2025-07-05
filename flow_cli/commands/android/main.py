@@ -2,14 +2,15 @@
 Android commands group - Android development tools
 """
 
-import click
 from typing import Optional
 
+import click
+
 from flow_cli.commands.android.build import build_command
-from flow_cli.commands.android.run import run_command
-from flow_cli.commands.android.install import install_command
 from flow_cli.commands.android.devices import devices_command
 from flow_cli.commands.android.flavors import flavors_command
+from flow_cli.commands.android.install import install_command
+from flow_cli.commands.android.run import run_command
 
 
 @click.group(invoke_without_command=True)
@@ -29,6 +30,7 @@ def show_android_menu(ctx: click.Context) -> None:
     """Show interactive Android menu"""
     import inquirer
     from rich.console import Console
+
     from flow_cli.core.ui.banner import show_section_header
 
     console = Console()
