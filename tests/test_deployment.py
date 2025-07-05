@@ -1,6 +1,7 @@
 """
 Tests for deployment commands
 """
+
 # mypy: ignore-errors
 
 from pathlib import Path

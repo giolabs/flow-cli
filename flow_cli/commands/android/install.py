@@ -1,6 +1,7 @@
 """
 Android install command - Install APKs on Android devices
 """
+
 # mypy: ignore-errors
 
 import subprocess
@@ -251,7 +252,9 @@ def install_apks_on_devices(apks: List[Path], devices: List[Dict[str, str]]) -> 
     display_installation_summary(completed_installations, total_installations, failed_installations)
 
 
-def display_installation_summary(completed: int, total: int, failed: List[Tuple[str, str, str]]) -> None:
+def display_installation_summary(
+    completed: int, total: int, failed: List[Tuple[str, str, str]]
+) -> None:
     """Display installation summary"""
 
     # Summary table

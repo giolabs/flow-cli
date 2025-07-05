@@ -131,7 +131,12 @@ class FlutterProject:
 
     def get_build_outputs(self) -> Dict[str, List[Path]]:
         """Get build output files (APKs, IPAs, etc.)"""
-        outputs: Dict[str, List[Path]] = {"android_apks": [], "android_bundles": [], "ios_apps": [], "web_builds": []}
+        outputs: Dict[str, List[Path]] = {
+            "android_apks": [],
+            "android_bundles": [],
+            "ios_apps": [],
+            "web_builds": [],
+        }
 
         # Android APKs
         apk_dir = self.path / "build" / "app" / "outputs" / "flutter-apk"

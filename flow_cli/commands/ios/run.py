@@ -1,6 +1,7 @@
 """
 iOS run command - Run Flutter app on iOS simulators and devices
 """
+
 # mypy: ignore-errors
 
 import json

@@ -1,6 +1,7 @@
 """
 Pytest configuration and fixtures for Flow CLI tests
 """
+
 # mypy: ignore-errors
 
 import json

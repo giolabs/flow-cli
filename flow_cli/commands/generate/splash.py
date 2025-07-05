@@ -227,12 +227,14 @@ def create_splash_config(
     # Platform settings
     if platform in ["android", "both"]:
         config["flutter_native_splash"]["android"] = "true"
-        config["flutter_native_splash"]["android_12"] = json.dumps({
-            "image": splash_path,
-            "icon_background_color": background_color,
-            "image_dark": splash_path,
-            "icon_background_color_dark": background_color,
-        })
+        config["flutter_native_splash"]["android_12"] = json.dumps(
+            {
+                "image": splash_path,
+                "icon_background_color": background_color,
+                "image_dark": splash_path,
+                "icon_background_color_dark": background_color,
+            }
+        )
     else:
         config["flutter_native_splash"]["android"] = "false"
 

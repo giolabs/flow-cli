@@ -1,6 +1,7 @@
 """
 Tests for the doctor command
 """
+
 # mypy: ignore-errors
 
 from unittest.mock import Mock, patch
@@ -336,9 +337,7 @@ def test_doctor_command_success(monkeypatch: Any, capsys: Any) -> None:
         "flow_cli.commands.doctor.check_ios_setup",
         lambda: {"ios_development_possible": True, "xcode_installed": True},
     )
-    monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_git_setup", lambda: {"git_installed": True}
-    )
+    monkeypatch.setattr("flow_cli.commands.doctor.check_git_setup", lambda: {"git_installed": True})
 
     # Run doctor command
     doctor_command()
