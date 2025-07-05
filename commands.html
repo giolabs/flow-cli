@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Reference &mdash; Flow CLI 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Flow CLI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#flow">flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#doctor">doctor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyze">analyze</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#android">android</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#android-build">android build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#android-run">android run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#android-devices">android devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#android-install">android install</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ios">ios</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ios-devices">ios devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ios-run">ios run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#generate">generate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#generate-icons">generate icons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-splash">generate splash</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deployment">deployment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#deployment-setup">deployment setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deployment-keystore">deployment keystore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deployment-release">deployment release</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#config">config</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#global-options">Global Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flow CLI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Command Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/commands.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="command-reference">
+<h1>Command Reference<a class="headerlink" href="#command-reference" title="Link to this heading"></a></h1>
+<p>Complete reference for all Flow CLI commands.</p>
+<section id="flow">
+<h2>flow<a class="headerlink" href="#flow" title="Link to this heading"></a></h2>
+<p>🚀 Flow CLI - A beautiful, interactive CLI tool for Flutter developers</p>
+<p>Build amazing Flutter apps with ease using our comprehensive set of tools for Android, iOS, and multi-flavor development.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--version</span></code>: Show version information</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--verbose,</span> <span class="pre">-v</span></code>: Enable verbose output</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--help</span></code>: Show this message and exit</p></li>
+</ul>
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<section id="doctor">
+<h3>doctor<a class="headerlink" href="#doctor" title="Link to this heading"></a></h3>
+<p>🩺 Check development environment health</p>
+<p>Comprehensive health check for Flutter development environment including Flutter SDK, Android SDK, iOS tools, and other dependencies.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>doctor<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--fix</span></code>: Attempt to fix detected issues automatically</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--json</span></code>: Output results in JSON format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code>: Show detailed information about each check</p></li>
+</ul>
+</section>
+<section id="analyze">
+<h3>analyze<a class="headerlink" href="#analyze" title="Link to this heading"></a></h3>
+<p>📊 Analyze Flutter project for issues</p>
+<p>Static analysis and linting for Flutter projects with detailed reporting and actionable recommendations.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>analyze<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--path</span></code>: Specific path to analyze (default: current directory)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--json</span></code>: Output results in JSON format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--fix</span></code>: Attempt to fix issues automatically</p></li>
+</ul>
+</section>
+<section id="android">
+<h3>android<a class="headerlink" href="#android" title="Link to this heading"></a></h3>
+<p>🤖 Android development tools</p>
+<p>Complete Android development workflow including building, running, device management, and multi-flavor support.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>android<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="android-build">
+<h4>android build<a class="headerlink" href="#android-build" title="Link to this heading"></a></h4>
+<p>Build Android application</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>android<span class="w"> </span>build<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>FLAVOR<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--flavor</span></code>: Build flavor (development, production, etc.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output-format</span></code>: Output format (apk, aab)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--target-platform</span></code>: Target platform (android-arm, android-arm64)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--release</span></code>: Build in release mode</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--debug</span></code>: Build in debug mode</p></li>
+</ul>
+</section>
+<section id="android-run">
+<h4>android run<a class="headerlink" href="#android-run" title="Link to this heading"></a></h4>
+<p>Run Android application</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>android<span class="w"> </span>run<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>FLAVOR<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--device</span></code>: Target device ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flavor</span></code>: Run flavor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--hot-reload</span></code>: Enable hot reload</p></li>
+</ul>
+</section>
+<section id="android-devices">
+<h4>android devices<a class="headerlink" href="#android-devices" title="Link to this heading"></a></h4>
+<p>List available Android devices</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>android<span class="w"> </span>devices<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--json</span></code>: Output in JSON format</p></li>
+</ul>
+</section>
+<section id="android-install">
+<h4>android install<a class="headerlink" href="#android-install" title="Link to this heading"></a></h4>
+<p>Install APK on device</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>android<span class="w"> </span>install<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>APK_PATH<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--device</span></code>: Target device ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flavor</span></code>: Install specific flavor</p></li>
+</ul>
+</section>
+</section>
+<section id="ios">
+<h3>ios<a class="headerlink" href="#ios" title="Link to this heading"></a></h3>
+<p>🍎 iOS development tools (macOS only)</p>
+<p>iOS development tools including simulators, building, and deployment.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>ios<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="ios-devices">
+<h4>ios devices<a class="headerlink" href="#ios-devices" title="Link to this heading"></a></h4>
+<p>List available iOS devices and simulators</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>ios<span class="w"> </span>devices<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--json</span></code>: Output in JSON format</p></li>
+</ul>
+</section>
+<section id="ios-run">
+<h4>ios run<a class="headerlink" href="#ios-run" title="Link to this heading"></a></h4>
+<p>Run iOS application</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>ios<span class="w"> </span>run<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>FLAVOR<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--device</span></code>: Target device/simulator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flavor</span></code>: Run flavor</p></li>
+</ul>
+</section>
+</section>
+<section id="generate">
+<h3>generate<a class="headerlink" href="#generate" title="Link to this heading"></a></h3>
+<p>🎨 Asset generation tools</p>
+<p>Automated generation of app icons, splash screens, and other assets with multi-flavor support.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>generate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="generate-icons">
+<h4>generate icons<a class="headerlink" href="#generate-icons" title="Link to this heading"></a></h4>
+<p>Generate app icons</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>generate<span class="w"> </span>icons<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--source</span></code>: Source icon image path</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flavor</span></code>: Generate for specific flavor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--platforms</span></code>: Target platforms (android, ios)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--adaptive</span></code>: Generate adaptive icons (Android)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--force</span></code>: Force regeneration</p></li>
+</ul>
+</section>
+<section id="generate-splash">
+<h4>generate splash<a class="headerlink" href="#generate-splash" title="Link to this heading"></a></h4>
+<p>Generate splash screens</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>generate<span class="w"> </span>splash<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--image</span></code>: Splash screen image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--background-color</span></code>: Background color</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flavor</span></code>: Generate for specific flavor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--android-12</span></code>: Generate Android 12+ splash screen</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--force</span></code>: Force regeneration</p></li>
+</ul>
+</section>
+</section>
+<section id="deployment">
+<h3>deployment<a class="headerlink" href="#deployment" title="Link to this heading"></a></h3>
+<p>🚀 Deployment and release tools</p>
+<p>Comprehensive deployment solution with Fastlane integration for automated releases to Google Play Store and Apple App Store.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>deployment<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="deployment-setup">
+<h4>deployment setup<a class="headerlink" href="#deployment-setup" title="Link to this heading"></a></h4>
+<p>⚙️ Configure Fastlane for Flutter project</p>
+<p>Sets up Fastlane with Flutter-specific configuration for automated deployment.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>deployment<span class="w"> </span>setup<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--force</span></code>: Force setup even if Fastlane already exists</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--skip-branch</span></code>: Skip creating feature branch</p></li>
+</ul>
+</section>
+<section id="deployment-keystore">
+<h4>deployment keystore<a class="headerlink" href="#deployment-keystore" title="Link to this heading"></a></h4>
+<p>🔐 Generate signing certificates for Android and iOS</p>
+<p>Creates keystores and certificates needed for release builds and store deployment.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>deployment<span class="w"> </span>keystore<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--platform</span></code>: Platform to generate keystore for (android, ios, both)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--force</span></code>: Force regeneration of existing keystores</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output-dir</span></code>: Custom output directory for keystores</p></li>
+</ul>
+</section>
+<section id="deployment-release">
+<h4>deployment release<a class="headerlink" href="#deployment-release" title="Link to this heading"></a></h4>
+<p>📦 Build and deploy releases to app stores</p>
+<p>Comprehensive release management with automated building, testing, and deployment.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>deployment<span class="w"> </span>release<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--platform</span></code>: Platform to release (android, ios, both)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flavor</span></code>: Flavor to build</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--track</span></code>: Release track (internal, alpha, beta, production)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--build-only</span></code>: Only build, do not deploy</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--skip-tests</span></code>: Skip running tests before build</p></li>
+</ul>
+</section>
+</section>
+<section id="config">
+<h3>config<a class="headerlink" href="#config" title="Link to this heading"></a></h3>
+<p>⚙️ Manage Flow CLI global configuration</p>
+<p>Configure Flutter SDK paths, default settings, and preferences with interactive setup wizard.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>config<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--set</span></code>: Set configuration value (key=value)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--get</span></code>: Get configuration value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--list</span></code>: List all configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--init</span></code>: Initialize configuration with setup wizard</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--reset</span></code>: Reset configuration to defaults</p></li>
+</ul>
+</section>
+</section>
+<section id="global-options">
+<h2>Global Options<a class="headerlink" href="#global-options" title="Link to this heading"></a></h2>
+<p>All commands support these global options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--verbose,</span> <span class="pre">-v</span></code>: Enable verbose output for detailed logging</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--help</span></code>: Show help message for the command</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--version</span></code>: Show Flow CLI version (root command only)</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Flow CLI stores configuration in <code class="docutils literal notranslate"><span class="pre">~/.flow-cli/config.yaml</span></code>. Key configuration options include:</p>
+<ul class="simple">
+<li><p><strong>flutter.sdk_path</strong>: Path to Flutter SDK</p></li>
+<li><p><strong>android.sdk_path</strong>: Path to Android SDK</p></li>
+<li><p><strong>ios.xcode_path</strong>: Path to Xcode (macOS only)</p></li>
+<li><p><strong>general.default_flavor</strong>: Default flavor for builds</p></li>
+<li><p><strong>general.auto_pub_get</strong>: Automatically run <code class="docutils literal notranslate"><span class="pre">flutter</span> <span class="pre">pub</span> <span class="pre">get</span></code></p></li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check environment</span>
+flow<span class="w"> </span>doctor
+
+<span class="c1"># Build Android release</span>
+flow<span class="w"> </span>android<span class="w"> </span>build<span class="w"> </span>production<span class="w"> </span>--release
+
+<span class="c1"># Generate icons for all flavors</span>
+flow<span class="w"> </span>generate<span class="w"> </span>icons<span class="w"> </span>--platforms<span class="w"> </span>android,ios
+
+<span class="c1"># Setup deployment</span>
+flow<span class="w"> </span>deployment<span class="w"> </span>setup
+flow<span class="w"> </span>deployment<span class="w"> </span>keystore
+flow<span class="w"> </span>deployment<span class="w"> </span>release<span class="w"> </span>--track<span class="w"> </span>internal
+
+<span class="c1"># Configure Flow CLI</span>
+flow<span class="w"> </span>config<span class="w"> </span>--init
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Flow CLI Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

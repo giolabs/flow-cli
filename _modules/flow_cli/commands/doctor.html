@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>flow_cli.commands.doctor &mdash; Flow CLI 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Flow CLI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../commands.html">Command Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Flow CLI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">flow_cli.commands.doctor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for flow_cli.commands.doctor</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Doctor command - Check development environment health</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.progress</span><span class="w"> </span><span class="kn">import</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">SpinnerColumn</span><span class="p">,</span> <span class="n">TextColumn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_section_header</span><span class="p">,</span> <span class="n">show_success</span><span class="p">,</span> <span class="n">show_error</span><span class="p">,</span> <span class="n">show_warning</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--verbose&#39;</span><span class="p">,</span> <span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Show detailed information&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">doctor_command</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    🩺 Check development environment health</span>
+<span class="sd">    </span>
+<span class="sd">    Verifies that all required tools are installed and configured correctly</span>
+<span class="sd">    for Flutter development with Flow CLI.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;Environment Health Check&quot;</span><span class="p">,</span> <span class="s2">&quot;🩺&quot;</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">Progress</span><span class="p">(</span>
+        <span class="n">SpinnerColumn</span><span class="p">(),</span>
+        <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="n">console</span><span class="o">=</span><span class="n">console</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
+        
+        <span class="c1"># Collect all checks</span>
+        <span class="n">checks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;Checking Flutter SDK...&quot;</span><span class="p">,</span> <span class="n">check_flutter</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Checking Python environment...&quot;</span><span class="p">,</span> <span class="n">check_python</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Checking Android SDK...&quot;</span><span class="p">,</span> <span class="n">check_android</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Checking iOS development (macOS only)...&quot;</span><span class="p">,</span> <span class="n">check_ios</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Checking Git...&quot;</span><span class="p">,</span> <span class="n">check_git</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Checking required Python packages...&quot;</span><span class="p">,</span> <span class="n">check_python_packages</span><span class="p">),</span>
+        <span class="p">]</span>
+        
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">description</span><span class="p">,</span> <span class="n">check_func</span> <span class="ow">in</span> <span class="n">checks</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">check_func</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">progress</span><span class="o">.</span><span class="n">remove_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+    
+    <span class="c1"># Display results</span>
+    <span class="n">display_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+
+<div class="viewcode-block" id="check_flutter">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.check_flutter">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_flutter</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check Flutter SDK installation&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">],</span> 
+                              <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">version_line</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Extract version like &quot;Flutter 3.16.0&quot;</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">version_line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="k">else</span> <span class="s2">&quot;Unknown&quot;</span>
+            
+            <span class="c1"># Check Flutter doctor</span>
+            <span class="n">doctor_result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="s1">&#39;doctor&#39;</span><span class="p">,</span> <span class="s1">&#39;--no-version-check&#39;</span><span class="p">],</span> 
+                                         <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="s2">&quot;No issues found!&quot;</span> <span class="ow">in</span> <span class="n">doctor_result</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;✅&quot;</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Flutter </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">details</span> <span class="o">=</span> <span class="s2">&quot;All Flutter dependencies are satisfied&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;⚠️&quot;</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Flutter </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> (with issues)&quot;</span>
+                <span class="n">details</span> <span class="o">=</span> <span class="s2">&quot;Run &#39;flutter doctor&#39; for more details&quot;</span>
+                
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Flutter SDK&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Flutter SDK&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Not found&quot;</span><span class="p">,</span> <span class="s2">&quot;Install Flutter SDK from https://flutter.dev&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Flutter SDK&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Not found or not responding&quot;</span><span class="p">,</span> <span class="s2">&quot;Install Flutter SDK from https://flutter.dev&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_python">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.check_python">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_python</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check Python installation&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">micro</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Python&quot;</span><span class="p">,</span> <span class="s2">&quot;✅&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Python </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;Python version is compatible&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Python&quot;</span><span class="p">,</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Python </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;Python 3.8+ recommended&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Python&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Error checking version&quot;</span><span class="p">,</span> <span class="s2">&quot;Unable to determine Python version&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_android">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.check_android">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_android</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check Android SDK and tools&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Check if Android SDK is available</span>
+        <span class="n">android_home</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Library&quot;</span> <span class="o">/</span> <span class="s2">&quot;Android&quot;</span> <span class="o">/</span> <span class="s2">&quot;sdk&quot;</span>  <span class="c1"># macOS default</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">android_home</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">android_home</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Android&quot;</span> <span class="o">/</span> <span class="s2">&quot;Sdk&quot;</span>  <span class="c1"># Linux default</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">android_home</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="c1"># Try environment variable</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+            <span class="n">android_home_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ANDROID_HOME&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">android_home_env</span><span class="p">:</span>
+                <span class="n">android_home</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">android_home_env</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">android_home</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="c1"># Check for adb</span>
+            <span class="n">adb_path</span> <span class="o">=</span> <span class="n">android_home</span> <span class="o">/</span> <span class="s2">&quot;platform-tools&quot;</span> <span class="o">/</span> <span class="s2">&quot;adb&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">adb_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">adb_path</span> <span class="o">=</span> <span class="n">android_home</span> <span class="o">/</span> <span class="s2">&quot;platform-tools&quot;</span> <span class="o">/</span> <span class="s2">&quot;adb.exe&quot;</span>  <span class="c1"># Windows</span>
+            
+            <span class="k">if</span> <span class="n">adb_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="c1"># Check adb version</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">adb_path</span><span class="p">),</span> <span class="s1">&#39;version&#39;</span><span class="p">],</span> 
+                                      <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Android SDK&quot;</span><span class="p">,</span> <span class="s2">&quot;✅&quot;</span><span class="p">,</span> <span class="s2">&quot;Android SDK found&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;SDK at </span><span class="si">{</span><span class="n">android_home</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Android SDK&quot;</span><span class="p">,</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">,</span> <span class="s2">&quot;SDK found, ADB issues&quot;</span><span class="p">,</span> <span class="s2">&quot;ADB may not be working properly&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Android SDK&quot;</span><span class="p">,</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">,</span> <span class="s2">&quot;SDK found, no ADB&quot;</span><span class="p">,</span> <span class="s2">&quot;Platform tools may be missing&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Android SDK&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Not found&quot;</span><span class="p">,</span> <span class="s2">&quot;Install Android SDK via Android Studio&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Android SDK&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Error checking&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_ios">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.check_ios">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_ios</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check iOS development tools (macOS only)&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+    
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;iOS Development&quot;</span><span class="p">,</span> <span class="s2">&quot;ℹ️&quot;</span><span class="p">,</span> <span class="s2">&quot;Not applicable&quot;</span><span class="p">,</span> <span class="s2">&quot;iOS development requires macOS&quot;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Check Xcode</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;xcrun&#39;</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">],</span> 
+                              <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Check for iOS simulators</span>
+            <span class="n">sim_result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;xcrun&#39;</span><span class="p">,</span> <span class="s1">&#39;simctl&#39;</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;devices&#39;</span><span class="p">],</span> 
+                                      <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;iOS&quot;</span> <span class="ow">in</span> <span class="n">sim_result</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;iOS Development&quot;</span><span class="p">,</span> <span class="s2">&quot;✅&quot;</span><span class="p">,</span> <span class="s2">&quot;Xcode available&quot;</span><span class="p">,</span> <span class="s2">&quot;iOS simulators found&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;iOS Development&quot;</span><span class="p">,</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">,</span> <span class="s2">&quot;Xcode available&quot;</span><span class="p">,</span> <span class="s2">&quot;No iOS simulators found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;iOS Development&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Xcode not found&quot;</span><span class="p">,</span> <span class="s2">&quot;Install Xcode from Mac App Store&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;iOS Development&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Error checking Xcode&quot;</span><span class="p">,</span> <span class="s2">&quot;Unable to verify Xcode installation&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_git">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.check_git">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_git</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check Git installation&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;git&#39;</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">],</span> 
+                              <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Git&quot;</span><span class="p">,</span> <span class="s2">&quot;✅&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Git </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;Git is available&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Git&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Not found&quot;</span><span class="p">,</span> <span class="s2">&quot;Install Git from https://git-scm.com&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Git&quot;</span><span class="p">,</span> <span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;Not found&quot;</span><span class="p">,</span> <span class="s2">&quot;Install Git from https://git-scm.com&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_python_packages">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.check_python_packages">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_python_packages</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check required Python packages&quot;&quot;&quot;</span>
+    <span class="n">required_packages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;rich&#39;</span><span class="p">,</span> <span class="s1">&#39;inquirer&#39;</span><span class="p">,</span> <span class="s1">&#39;pyyaml&#39;</span><span class="p">,</span> <span class="s1">&#39;requests&#39;</span><span class="p">,</span> <span class="s1">&#39;colorama&#39;</span><span class="p">,</span> <span class="s1">&#39;Pillow&#39;</span><span class="p">,</span> <span class="s1">&#39;ruamel.yaml&#39;</span>
+    <span class="p">]</span>
+    
+    <span class="n">missing_packages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">required_packages</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">__import__</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">missing_packages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">missing_packages</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Python Packages&quot;</span><span class="p">,</span> <span class="s2">&quot;✅&quot;</span><span class="p">,</span> <span class="s2">&quot;All packages available&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;All </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">required_packages</span><span class="p">)</span><span class="si">}</span><span class="s2"> packages found&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">missing_str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_packages</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Python Packages&quot;</span><span class="p">,</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">missing_packages</span><span class="p">)</span><span class="si">}</span><span class="s2"> missing&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Missing: </span><span class="si">{</span><span class="n">missing_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="display_results">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.display_results">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">display_results</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display check results in a nice table&quot;&quot;&quot;</span>
+    
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;🩺 Environment Health Check Results&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Component&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">no_wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Version/Info&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bright_white&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Details&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+    
+    <span class="n">success_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">warning_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error_count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">details</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;✅&quot;</span><span class="p">:</span>
+            <span class="n">success_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span>
+        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">:</span>
+            <span class="n">warning_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>
+        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;❌&quot;</span><span class="p">:</span>
+            <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># ℹ️</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">)</span>
+    
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    
+    <span class="c1"># Summary</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">error_count</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">warning_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">summary_style</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span>
+        <span class="n">summary_icon</span> <span class="o">=</span> <span class="s2">&quot;🎉&quot;</span>
+        <span class="n">summary_text</span> <span class="o">=</span> <span class="s2">&quot;Perfect! Your development environment is ready!&quot;</span>
+    <span class="k">elif</span> <span class="n">error_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">summary_style</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>
+        <span class="n">summary_icon</span> <span class="o">=</span> <span class="s2">&quot;⚠️&quot;</span>
+        <span class="n">summary_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Good! </span><span class="si">{</span><span class="n">warning_count</span><span class="si">}</span><span class="s2"> minor issues found.&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">summary_style</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span>
+        <span class="n">summary_icon</span> <span class="o">=</span> <span class="s2">&quot;❌&quot;</span>
+        <span class="n">summary_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Issues found: </span><span class="si">{</span><span class="n">error_count</span><span class="si">}</span><span class="s2"> errors, </span><span class="si">{</span><span class="n">warning_count</span><span class="si">}</span><span class="s2"> warnings.&quot;</span>
+    
+    <span class="n">summary</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">summary_style</span><span class="si">}</span><span class="s2">]</span><span class="si">{</span><span class="n">summary_icon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">summary_text</span><span class="si">}</span><span class="s2">[/</span><span class="si">{</span><span class="n">summary_style</span><span class="si">}</span><span class="s2">]</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="n">summary</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">success_count</span><span class="si">}</span><span class="s2"> OK  ⚠️ </span><span class="si">{</span><span class="n">warning_count</span><span class="si">}</span><span class="s2"> Warnings  ❌ </span><span class="si">{</span><span class="n">error_count</span><span class="si">}</span><span class="s2"> Errors&quot;</span>
+    
+    <span class="n">summary_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+        <span class="n">summary</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📋 Summary&quot;</span><span class="p">,</span>
+        <span class="n">border_style</span><span class="o">=</span><span class="n">summary_style</span><span class="p">,</span>
+        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
+    <span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">summary_panel</span><span class="p">)</span>
+    
+    <span class="c1"># Show recommendations</span>
+    <span class="k">if</span> <span class="n">error_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">warning_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">show_recommendations</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_recommendations">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.show_recommendations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">show_recommendations</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show recommendations for fixing issues&quot;&quot;&quot;</span>
+    <span class="n">recommendations</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">details</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">]:</span>
+            <span class="n">recommendations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;• </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">recommendations</span><span class="p">:</span>
+        <span class="n">rec_text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">recommendations</span><span class="p">)</span>
+        <span class="n">rec_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+            <span class="n">rec_text</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;💡 Recommendations&quot;</span><span class="p">,</span>
+            <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+            <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
+        <span class="p">)</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">rec_panel</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Flow CLI Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

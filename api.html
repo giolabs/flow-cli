@@ -1,0 +1,944 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; Flow CLI 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Command Reference" href="commands.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Flow CLI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Command Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-flow_cli.main">Main CLI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.show_config_menu"><code class="docutils literal notranslate"><span class="pre">show_config_menu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.show_help"><code class="docutils literal notranslate"><span class="pre">show_help()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.show_interactive_menu"><code class="docutils literal notranslate"><span class="pre">show_interactive_menu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.show_main_menu"><code class="docutils literal notranslate"><span class="pre">show_main_menu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.show_no_project_warning"><code class="docutils literal notranslate"><span class="pre">show_no_project_warning()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.show_project_info"><code class="docutils literal notranslate"><span class="pre">show_project_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow_cli.main.show_version"><code class="docutils literal notranslate"><span class="pre">show_version()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.commands.doctor">Doctor Command</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.check_android"><code class="docutils literal notranslate"><span class="pre">check_android()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.check_flutter"><code class="docutils literal notranslate"><span class="pre">check_flutter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.check_git"><code class="docutils literal notranslate"><span class="pre">check_git()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.check_ios"><code class="docutils literal notranslate"><span class="pre">check_ios()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.check_python"><code class="docutils literal notranslate"><span class="pre">check_python()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.check_python_packages"><code class="docutils literal notranslate"><span class="pre">check_python_packages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.display_results"><code class="docutils literal notranslate"><span class="pre">display_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.doctor.show_recommendations"><code class="docutils literal notranslate"><span class="pre">show_recommendations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.commands.analyze">Analyze Command</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.analyze_build_artifacts"><code class="docutils literal notranslate"><span class="pre">analyze_build_artifacts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.analyze_dependencies"><code class="docutils literal notranslate"><span class="pre">analyze_dependencies()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.analyze_flavors"><code class="docutils literal notranslate"><span class="pre">analyze_flavors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.analyze_flutter_code"><code class="docutils literal notranslate"><span class="pre">analyze_flutter_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.analyze_project_structure"><code class="docutils literal notranslate"><span class="pre">analyze_project_structure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.display_analysis_summary"><code class="docutils literal notranslate"><span class="pre">display_analysis_summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.display_json_results"><code class="docutils literal notranslate"><span class="pre">display_json_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.analyze.display_text_results"><code class="docutils literal notranslate"><span class="pre">display_text_results()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.commands.config">Config Command</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.configure_android_sdk"><code class="docutils literal notranslate"><span class="pre">configure_android_sdk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.configure_flutter_sdk"><code class="docutils literal notranslate"><span class="pre">configure_flutter_sdk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.configure_general_settings"><code class="docutils literal notranslate"><span class="pre">configure_general_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.configure_ios_settings"><code class="docutils literal notranslate"><span class="pre">configure_ios_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.detect_android_sdk"><code class="docutils literal notranslate"><span class="pre">detect_android_sdk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.detect_flutter_sdk"><code class="docutils literal notranslate"><span class="pre">detect_flutter_sdk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.detect_xcode_path"><code class="docutils literal notranslate"><span class="pre">detect_xcode_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.edit_setting_interactive"><code class="docutils literal notranslate"><span class="pre">edit_setting_interactive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.ensure_config_dir"><code class="docutils literal notranslate"><span class="pre">ensure_config_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.get_config_value"><code class="docutils literal notranslate"><span class="pre">get_config_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.list_configuration"><code class="docutils literal notranslate"><span class="pre">list_configuration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.open_config_file"><code class="docutils literal notranslate"><span class="pre">open_config_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.reset_configuration"><code class="docutils literal notranslate"><span class="pre">reset_configuration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.run_config_wizard"><code class="docutils literal notranslate"><span class="pre">run_config_wizard()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.save_config"><code class="docutils literal notranslate"><span class="pre">save_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.set_config_value"><code class="docutils literal notranslate"><span class="pre">set_config_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.show_config_menu"><code class="docutils literal notranslate"><span class="pre">show_config_menu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.validate_android_sdk"><code class="docutils literal notranslate"><span class="pre">validate_android_sdk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.validate_flutter_sdk"><code class="docutils literal notranslate"><span class="pre">validate_flutter_sdk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.validate_xcode"><code class="docutils literal notranslate"><span class="pre">validate_xcode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.config.verify_configuration"><code class="docutils literal notranslate"><span class="pre">verify_configuration()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.commands.android.main">Android Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.main.show_android_menu"><code class="docutils literal notranslate"><span class="pre">show_android_menu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.build.build_single_flavor"><code class="docutils literal notranslate"><span class="pre">build_single_flavor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.build.display_build_results"><code class="docutils literal notranslate"><span class="pre">display_build_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.build.get_build_output_path"><code class="docutils literal notranslate"><span class="pre">get_build_output_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.build.get_file_size_mb"><code class="docutils literal notranslate"><span class="pre">get_file_size_mb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.build.interactive_build_options"><code class="docutils literal notranslate"><span class="pre">interactive_build_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.build.show_build_failures"><code class="docutils literal notranslate"><span class="pre">show_build_failures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.run.get_android_devices"><code class="docutils literal notranslate"><span class="pre">get_android_devices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.run.run_flutter_app"><code class="docutils literal notranslate"><span class="pre">run_flutter_app()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.run.select_device"><code class="docutils literal notranslate"><span class="pre">select_device()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.android.run.select_flavor"><code class="docutils literal notranslate"><span class="pre">select_flavor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.commands.ios.main">iOS Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.main.show_ios_menu"><code class="docutils literal notranslate"><span class="pre">show_ios_menu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.ensure_simulator_running"><code class="docutils literal notranslate"><span class="pre">ensure_simulator_running()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.get_device_by_identifier"><code class="docutils literal notranslate"><span class="pre">get_device_by_identifier()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.get_ios_devices"><code class="docutils literal notranslate"><span class="pre">get_ios_devices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.get_simulators_direct"><code class="docutils literal notranslate"><span class="pre">get_simulators_direct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.run_flutter_app"><code class="docutils literal notranslate"><span class="pre">run_flutter_app()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.select_flavor"><code class="docutils literal notranslate"><span class="pre">select_flavor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.select_ios_device"><code class="docutils literal notranslate"><span class="pre">select_ios_device()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.show_available_devices"><code class="docutils literal notranslate"><span class="pre">show_available_devices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.show_setup_instructions"><code class="docutils literal notranslate"><span class="pre">show_setup_instructions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.ios.run.validate_device"><code class="docutils literal notranslate"><span class="pre">validate_device()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.commands.generate.main">Generate Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.main.show_generate_menu"><code class="docutils literal notranslate"><span class="pre">show_generate_menu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.create_icon_config"><code class="docutils literal notranslate"><span class="pre">create_icon_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.display_batch_results"><code class="docutils literal notranslate"><span class="pre">display_batch_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.generate_all_flavor_icons"><code class="docutils literal notranslate"><span class="pre">generate_all_flavor_icons()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.generate_flavor_icons"><code class="docutils literal notranslate"><span class="pre">generate_flavor_icons()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.generate_main_app_icons"><code class="docutils literal notranslate"><span class="pre">generate_main_app_icons()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.interactive_flavor_selection"><code class="docutils literal notranslate"><span class="pre">interactive_flavor_selection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.run_flutter_launcher_icons"><code class="docutils literal notranslate"><span class="pre">run_flutter_launcher_icons()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.show_flavor_requirements"><code class="docutils literal notranslate"><span class="pre">show_flavor_requirements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.show_generated_files"><code class="docutils literal notranslate"><span class="pre">show_generated_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.show_icon_requirements"><code class="docutils literal notranslate"><span class="pre">show_icon_requirements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.icons.show_package_installation_help"><code class="docutils literal notranslate"><span class="pre">show_package_installation_help()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.create_splash_config"><code class="docutils literal notranslate"><span class="pre">create_splash_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.display_batch_splash_results"><code class="docutils literal notranslate"><span class="pre">display_batch_splash_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.generate_all_flavor_splash"><code class="docutils literal notranslate"><span class="pre">generate_all_flavor_splash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.generate_flavor_splash"><code class="docutils literal notranslate"><span class="pre">generate_flavor_splash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.generate_main_app_splash"><code class="docutils literal notranslate"><span class="pre">generate_main_app_splash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.interactive_flavor_selection"><code class="docutils literal notranslate"><span class="pre">interactive_flavor_selection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.run_flutter_native_splash"><code class="docutils literal notranslate"><span class="pre">run_flutter_native_splash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.show_flavor_splash_requirements"><code class="docutils literal notranslate"><span class="pre">show_flavor_splash_requirements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.show_generated_splash_files"><code class="docutils literal notranslate"><span class="pre">show_generated_splash_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.show_package_installation_help"><code class="docutils literal notranslate"><span class="pre">show_package_installation_help()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.commands.generate.splash.show_splash_requirements"><code class="docutils literal notranslate"><span class="pre">show_splash_requirements()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core-modules">Core Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.core.flutter">Flutter Integration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject"><code class="docutils literal notranslate"><span class="pre">FlutterProject</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flow_cli.core.ui.banner">UI Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.core.ui.banner.show_banner"><code class="docutils literal notranslate"><span class="pre">show_banner()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.core.ui.banner.show_error"><code class="docutils literal notranslate"><span class="pre">show_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.core.ui.banner.show_info"><code class="docutils literal notranslate"><span class="pre">show_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.core.ui.banner.show_section_header"><code class="docutils literal notranslate"><span class="pre">show_section_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.core.ui.banner.show_success"><code class="docutils literal notranslate"><span class="pre">show_success()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow_cli.core.ui.banner.show_warning"><code class="docutils literal notranslate"><span class="pre">show_warning()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flow CLI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<section id="module-flow_cli.main">
+<span id="main-cli"></span><h2>Main CLI<a class="headerlink" href="#module-flow_cli.main" title="Link to this heading"></a></h2>
+<p>Flow CLI - Main entry point
+A beautiful, interactive CLI tool for Flutter developers</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.main">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.main" title="Link to this definition"></a></dt>
+<dd><p>Main entry point</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.show_config_menu">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">show_config_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#show_config_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.show_config_menu" title="Link to this definition"></a></dt>
+<dd><p>Show configuration menu - deprecated, now handled by config_command</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.show_help">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">show_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#show_help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.show_help" title="Link to this definition"></a></dt>
+<dd><p>Show detailed help information</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.show_interactive_menu">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">show_interactive_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#show_interactive_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.show_interactive_menu" title="Link to this definition"></a></dt>
+<dd><p>Show interactive main menu</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.show_main_menu">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">show_main_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#show_main_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.show_main_menu" title="Link to this definition"></a></dt>
+<dd><p>Show main menu with available commands</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.show_no_project_warning">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">show_no_project_warning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#show_no_project_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.show_no_project_warning" title="Link to this definition"></a></dt>
+<dd><p>Show warning when not in a Flutter project</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.show_project_info">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">show_project_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#show_project_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.show_project_info" title="Link to this definition"></a></dt>
+<dd><p>Show current Flutter project information</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.main.show_version">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.main.</span></span><span class="sig-name descname"><span class="pre">show_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/main.html#show_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.main.show_version" title="Link to this definition"></a></dt>
+<dd><p>Show version information with beautiful formatting</p>
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<section id="module-flow_cli.commands.doctor">
+<span id="doctor-command"></span><h3>Doctor Command<a class="headerlink" href="#module-flow_cli.commands.doctor" title="Link to this heading"></a></h3>
+<p>Doctor command - Check development environment health</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.check_android">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">check_android</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#check_android"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.check_android" title="Link to this definition"></a></dt>
+<dd><p>Check Android SDK and tools</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.check_flutter">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">check_flutter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#check_flutter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.check_flutter" title="Link to this definition"></a></dt>
+<dd><p>Check Flutter SDK installation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.check_git">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">check_git</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#check_git"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.check_git" title="Link to this definition"></a></dt>
+<dd><p>Check Git installation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.check_ios">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">check_ios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#check_ios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.check_ios" title="Link to this definition"></a></dt>
+<dd><p>Check iOS development tools (macOS only)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.check_python">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">check_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#check_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.check_python" title="Link to this definition"></a></dt>
+<dd><p>Check Python installation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.check_python_packages">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">check_python_packages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#check_python_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.check_python_packages" title="Link to this definition"></a></dt>
+<dd><p>Check required Python packages</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.display_results">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">display_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#display_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.display_results" title="Link to this definition"></a></dt>
+<dd><p>Display check results in a nice table</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.doctor.show_recommendations">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.doctor.</span></span><span class="sig-name descname"><span class="pre">show_recommendations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/doctor.html#show_recommendations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.doctor.show_recommendations" title="Link to this definition"></a></dt>
+<dd><p>Show recommendations for fixing issues</p>
+</dd></dl>
+
+</section>
+<section id="module-flow_cli.commands.analyze">
+<span id="analyze-command"></span><h3>Analyze Command<a class="headerlink" href="#module-flow_cli.commands.analyze" title="Link to this heading"></a></h3>
+<p>Analyze command - Analyze Flutter project for issues and metrics</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.analyze_build_artifacts">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">analyze_build_artifacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#analyze_build_artifacts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.analyze_build_artifacts" title="Link to this definition"></a></dt>
+<dd><p>Analyze build artifacts (APKs, AABs, etc.)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.analyze_dependencies">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">analyze_dependencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#analyze_dependencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.analyze_dependencies" title="Link to this definition"></a></dt>
+<dd><p>Analyze project dependencies</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.analyze_flavors">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">analyze_flavors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#analyze_flavors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.analyze_flavors" title="Link to this definition"></a></dt>
+<dd><p>Analyze flavor configurations</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.analyze_flutter_code">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">analyze_flutter_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#analyze_flutter_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.analyze_flutter_code" title="Link to this definition"></a></dt>
+<dd><p>Analyze Flutter code using flutter analyze</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.analyze_project_structure">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">analyze_project_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#analyze_project_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.analyze_project_structure" title="Link to this definition"></a></dt>
+<dd><p>Analyze project structure and organization</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.display_analysis_summary">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">display_analysis_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#display_analysis_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.display_analysis_summary" title="Link to this definition"></a></dt>
+<dd><p>Display analysis summary</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.display_json_results">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">display_json_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#display_json_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.display_json_results" title="Link to this definition"></a></dt>
+<dd><p>Display analysis results in JSON format</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.analyze.display_text_results">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.analyze.</span></span><span class="sig-name descname"><span class="pre">display_text_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/analyze.html#display_text_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.analyze.display_text_results" title="Link to this definition"></a></dt>
+<dd><p>Display analysis results in text format</p>
+</dd></dl>
+
+</section>
+<section id="module-flow_cli.commands.config">
+<span id="config-command"></span><h3>Config Command<a class="headerlink" href="#module-flow_cli.commands.config" title="Link to this heading"></a></h3>
+<p>Configuration command - Manage Flow CLI global configuration</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.configure_android_sdk">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">configure_android_sdk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">android_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#configure_android_sdk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.configure_android_sdk" title="Link to this definition"></a></dt>
+<dd><p>Configure Android SDK settings</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.configure_flutter_sdk">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">configure_flutter_sdk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flutter_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#configure_flutter_sdk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.configure_flutter_sdk" title="Link to this definition"></a></dt>
+<dd><p>Configure Flutter SDK settings</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.configure_general_settings">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">configure_general_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">general_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#configure_general_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.configure_general_settings" title="Link to this definition"></a></dt>
+<dd><p>Configure general Flow CLI settings</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.configure_ios_settings">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">configure_ios_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ios_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#configure_ios_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.configure_ios_settings" title="Link to this definition"></a></dt>
+<dd><p>Configure iOS development settings (macOS only)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.detect_android_sdk">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">detect_android_sdk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#detect_android_sdk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.detect_android_sdk" title="Link to this definition"></a></dt>
+<dd><p>Auto-detect Android SDK path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.detect_flutter_sdk">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">detect_flutter_sdk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#detect_flutter_sdk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.detect_flutter_sdk" title="Link to this definition"></a></dt>
+<dd><p>Auto-detect Flutter SDK path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.detect_xcode_path">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">detect_xcode_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#detect_xcode_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.detect_xcode_path" title="Link to this definition"></a></dt>
+<dd><p>Auto-detect Xcode path (macOS only)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.edit_setting_interactive">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">edit_setting_interactive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#edit_setting_interactive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.edit_setting_interactive" title="Link to this definition"></a></dt>
+<dd><p>Interactive setting editor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.ensure_config_dir">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">ensure_config_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#ensure_config_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.ensure_config_dir" title="Link to this definition"></a></dt>
+<dd><p>Ensure configuration directory exists</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.get_config_value">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">get_config_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#get_config_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.get_config_value" title="Link to this definition"></a></dt>
+<dd><p>Get a configuration value</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.list_configuration">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">list_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#list_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.list_configuration" title="Link to this definition"></a></dt>
+<dd><p>List all configuration values</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.load_config">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">load_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#load_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.load_config" title="Link to this definition"></a></dt>
+<dd><p>Load configuration from file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.open_config_file">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">open_config_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#open_config_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.open_config_file" title="Link to this definition"></a></dt>
+<dd><p>Open configuration file in default editor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.reset_configuration">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">reset_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#reset_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.reset_configuration" title="Link to this definition"></a></dt>
+<dd><p>Reset configuration to defaults</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.run_config_wizard">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">run_config_wizard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#run_config_wizard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.run_config_wizard" title="Link to this definition"></a></dt>
+<dd><p>Run interactive configuration wizard</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.save_config">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">save_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#save_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.save_config" title="Link to this definition"></a></dt>
+<dd><p>Save configuration to file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.set_config_value">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">set_config_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#set_config_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.set_config_value" title="Link to this definition"></a></dt>
+<dd><p>Set a configuration value</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.show_config_menu">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">show_config_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#show_config_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.show_config_menu" title="Link to this definition"></a></dt>
+<dd><p>Show interactive configuration menu</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.validate_android_sdk">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">validate_android_sdk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#validate_android_sdk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.validate_android_sdk" title="Link to this definition"></a></dt>
+<dd><p>Validate Android SDK path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.validate_flutter_sdk">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">validate_flutter_sdk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#validate_flutter_sdk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.validate_flutter_sdk" title="Link to this definition"></a></dt>
+<dd><p>Validate Flutter SDK path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.validate_xcode">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">validate_xcode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#validate_xcode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.validate_xcode" title="Link to this definition"></a></dt>
+<dd><p>Validate Xcode path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.config.verify_configuration">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.config.</span></span><span class="sig-name descname"><span class="pre">verify_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/config.html#verify_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.config.verify_configuration" title="Link to this definition"></a></dt>
+<dd><p>Verify configuration settings</p>
+</dd></dl>
+
+</section>
+<section id="module-flow_cli.commands.android.main">
+<span id="android-commands"></span><h3>Android Commands<a class="headerlink" href="#module-flow_cli.commands.android.main" title="Link to this heading"></a></h3>
+<p>Android commands group - Android development tools</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.main.show_android_menu">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.main.</span></span><span class="sig-name descname"><span class="pre">show_android_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/main.html#show_android_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.main.show_android_menu" title="Link to this definition"></a></dt>
+<dd><p>Show interactive Android menu</p>
+</dd></dl>
+
+<p id="module-flow_cli.commands.android.build">Android build command - Build Android APKs and AABs</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.build.build_single_flavor">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.build.</span></span><span class="sig-name descname"><span class="pre">build_single_flavor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/build.html#build_single_flavor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.build.build_single_flavor" title="Link to this definition"></a></dt>
+<dd><p>Build a single flavor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.build.display_build_results">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.build.</span></span><span class="sig-name descname"><span class="pre">display_build_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/build.html#display_build_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.build.display_build_results" title="Link to this definition"></a></dt>
+<dd><p>Display build results in a nice table</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.build.get_build_output_path">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.build.</span></span><span class="sig-name descname"><span class="pre">get_build_output_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/build.html#get_build_output_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.build.get_build_output_path" title="Link to this definition"></a></dt>
+<dd><p>Get the expected build output path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.build.get_file_size_mb">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.build.</span></span><span class="sig-name descname"><span class="pre">get_file_size_mb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/build.html#get_file_size_mb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.build.get_file_size_mb" title="Link to this definition"></a></dt>
+<dd><p>Get file size in MB</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.build.interactive_build_options">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.build.</span></span><span class="sig-name descname"><span class="pre">interactive_build_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/build.html#interactive_build_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.build.interactive_build_options" title="Link to this definition"></a></dt>
+<dd><p>Interactive selection of build options</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.build.show_build_failures">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.build.</span></span><span class="sig-name descname"><span class="pre">show_build_failures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">failed_builds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/build.html#show_build_failures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.build.show_build_failures" title="Link to this definition"></a></dt>
+<dd><p>Show details of failed builds</p>
+</dd></dl>
+
+<p id="module-flow_cli.commands.android.run">Android run command - Run Flutter app on Android devices</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.run.get_android_devices">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.run.</span></span><span class="sig-name descname"><span class="pre">get_android_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/run.html#get_android_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.run.get_android_devices" title="Link to this definition"></a></dt>
+<dd><p>Get list of connected Android devices</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.run.run_flutter_app">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.run.</span></span><span class="sig-name descname"><span class="pre">run_flutter_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/run.html#run_flutter_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.run.run_flutter_app" title="Link to this definition"></a></dt>
+<dd><p>Run Flutter app with specified parameters</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.run.select_device">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.run.</span></span><span class="sig-name descname"><span class="pre">select_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/run.html#select_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.run.select_device" title="Link to this definition"></a></dt>
+<dd><p>Interactive device selection</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.android.run.select_flavor">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.android.run.</span></span><span class="sig-name descname"><span class="pre">select_flavor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/android/run.html#select_flavor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.android.run.select_flavor" title="Link to this definition"></a></dt>
+<dd><p>Interactive flavor selection</p>
+</dd></dl>
+
+</section>
+<section id="module-flow_cli.commands.ios.main">
+<span id="ios-commands"></span><h3>iOS Commands<a class="headerlink" href="#module-flow_cli.commands.ios.main" title="Link to this heading"></a></h3>
+<p>iOS commands group - iOS development tools</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.main.show_ios_menu">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.main.</span></span><span class="sig-name descname"><span class="pre">show_ios_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/main.html#show_ios_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.main.show_ios_menu" title="Link to this definition"></a></dt>
+<dd><p>Show interactive iOS menu</p>
+</dd></dl>
+
+<p id="module-flow_cli.commands.ios.run">iOS run command - Run Flutter app on iOS simulators and devices</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.ensure_simulator_running">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">ensure_simulator_running</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#ensure_simulator_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.ensure_simulator_running" title="Link to this definition"></a></dt>
+<dd><p>Ensure simulator is running before launching app</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.get_device_by_identifier">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">get_device_by_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_identifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#get_device_by_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.get_device_by_identifier" title="Link to this definition"></a></dt>
+<dd><p>Get device info by ID or name</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.get_ios_devices">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">get_ios_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#get_ios_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.get_ios_devices" title="Link to this definition"></a></dt>
+<dd><p>Get list of available iOS devices and simulators</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.get_simulators_direct">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">get_simulators_direct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#get_simulators_direct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.get_simulators_direct" title="Link to this definition"></a></dt>
+<dd><p>Get simulators directly using simctl</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.run_flutter_app">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">run_flutter_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#run_flutter_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.run_flutter_app" title="Link to this definition"></a></dt>
+<dd><p>Run Flutter app with specified parameters</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.select_flavor">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">select_flavor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#select_flavor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.select_flavor" title="Link to this definition"></a></dt>
+<dd><p>Interactive flavor selection</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.select_ios_device">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">select_ios_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#select_ios_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.select_ios_device" title="Link to this definition"></a></dt>
+<dd><p>Interactive iOS device selection</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.show_available_devices">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">show_available_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#show_available_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.show_available_devices" title="Link to this definition"></a></dt>
+<dd><p>Show list of available devices</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.show_setup_instructions">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">show_setup_instructions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#show_setup_instructions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.show_setup_instructions" title="Link to this definition"></a></dt>
+<dd><p>Show iOS setup instructions</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.ios.run.validate_device">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.ios.run.</span></span><span class="sig-name descname"><span class="pre">validate_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_identifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/ios/run.html#validate_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.ios.run.validate_device" title="Link to this definition"></a></dt>
+<dd><p>Validate that device exists and is available</p>
+</dd></dl>
+
+</section>
+<section id="module-flow_cli.commands.generate.main">
+<span id="generate-commands"></span><h3>Generate Commands<a class="headerlink" href="#module-flow_cli.commands.generate.main" title="Link to this heading"></a></h3>
+<p>Generate commands group - Asset generation tools</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.main.show_generate_menu">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.main.</span></span><span class="sig-name descname"><span class="pre">show_generate_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/main.html#show_generate_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.main.show_generate_menu" title="Link to this definition"></a></dt>
+<dd><p>Show interactive generate menu</p>
+</dd></dl>
+
+<p id="module-flow_cli.commands.generate.icons">Icons generation command - Generate app icons using flutter_launcher_icons</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.create_icon_config">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">create_icon_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#create_icon_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.create_icon_config" title="Link to this definition"></a></dt>
+<dd><p>Create flutter_launcher_icons configuration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.display_batch_results">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">display_batch_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#display_batch_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.display_batch_results" title="Link to this definition"></a></dt>
+<dd><p>Display batch operation results</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.generate_all_flavor_icons">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">generate_all_flavor_icons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#generate_all_flavor_icons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.generate_all_flavor_icons" title="Link to this definition"></a></dt>
+<dd><p>Generate icons for all flavors</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.generate_flavor_icons">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">generate_flavor_icons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#generate_flavor_icons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.generate_flavor_icons" title="Link to this definition"></a></dt>
+<dd><p>Generate icons for specific flavor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.generate_main_app_icons">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">generate_main_app_icons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#generate_main_app_icons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.generate_main_app_icons" title="Link to this definition"></a></dt>
+<dd><p>Generate icons for main app (no flavor)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.interactive_flavor_selection">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">interactive_flavor_selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#interactive_flavor_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.interactive_flavor_selection" title="Link to this definition"></a></dt>
+<dd><p>Interactive flavor selection for icon generation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.run_flutter_launcher_icons">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">run_flutter_launcher_icons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#run_flutter_launcher_icons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.run_flutter_launcher_icons" title="Link to this definition"></a></dt>
+<dd><p>Run flutter_launcher_icons with given configuration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.show_flavor_requirements">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">show_flavor_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#show_flavor_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.show_flavor_requirements" title="Link to this definition"></a></dt>
+<dd><p>Show flavor icon requirements</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.show_generated_files">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">show_generated_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#show_generated_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.show_generated_files" title="Link to this definition"></a></dt>
+<dd><p>Show generated icon files</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.show_icon_requirements">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">show_icon_requirements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#show_icon_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.show_icon_requirements" title="Link to this definition"></a></dt>
+<dd><p>Show icon file requirements</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.icons.show_package_installation_help">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.icons.</span></span><span class="sig-name descname"><span class="pre">show_package_installation_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/icons.html#show_package_installation_help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.icons.show_package_installation_help" title="Link to this definition"></a></dt>
+<dd><p>Show help for installing flutter_launcher_icons</p>
+</dd></dl>
+
+<p id="module-flow_cli.commands.generate.splash">Splash screen generation command - Generate splash screens using flutter_native_splash</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.create_splash_config">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">create_splash_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splash_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#create_splash_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.create_splash_config" title="Link to this definition"></a></dt>
+<dd><p>Create flutter_native_splash configuration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.display_batch_splash_results">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">display_batch_splash_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#display_batch_splash_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.display_batch_splash_results" title="Link to this definition"></a></dt>
+<dd><p>Display batch splash operation results</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.generate_all_flavor_splash">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">generate_all_flavor_splash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#generate_all_flavor_splash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.generate_all_flavor_splash" title="Link to this definition"></a></dt>
+<dd><p>Generate splash screens for all flavors</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.generate_flavor_splash">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">generate_flavor_splash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#generate_flavor_splash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.generate_flavor_splash" title="Link to this definition"></a></dt>
+<dd><p>Generate splash screen for specific flavor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.generate_main_app_splash">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">generate_main_app_splash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#generate_main_app_splash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.generate_main_app_splash" title="Link to this definition"></a></dt>
+<dd><p>Generate splash screen for main app (no flavor)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.interactive_flavor_selection">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">interactive_flavor_selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#interactive_flavor_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.interactive_flavor_selection" title="Link to this definition"></a></dt>
+<dd><p>Interactive flavor selection for splash generation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.run_flutter_native_splash">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">run_flutter_native_splash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#run_flutter_native_splash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.run_flutter_native_splash" title="Link to this definition"></a></dt>
+<dd><p>Run flutter_native_splash with given configuration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.show_flavor_splash_requirements">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">show_flavor_splash_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#show_flavor_splash_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.show_flavor_splash_requirements" title="Link to this definition"></a></dt>
+<dd><p>Show flavor splash requirements</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.show_generated_splash_files">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">show_generated_splash_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">flavor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#show_generated_splash_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.show_generated_splash_files" title="Link to this definition"></a></dt>
+<dd><p>Show generated splash screen files</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.show_package_installation_help">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">show_package_installation_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#show_package_installation_help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.show_package_installation_help" title="Link to this definition"></a></dt>
+<dd><p>Show help for installing flutter_native_splash</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.commands.generate.splash.show_splash_requirements">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.commands.generate.splash.</span></span><span class="sig-name descname"><span class="pre">show_splash_requirements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/commands/generate/splash.html#show_splash_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.commands.generate.splash.show_splash_requirements" title="Link to this definition"></a></dt>
+<dd><p>Show splash image requirements</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="core-modules">
+<h2>Core Modules<a class="headerlink" href="#core-modules" title="Link to this heading"></a></h2>
+<section id="module-flow_cli.core.flutter">
+<span id="flutter-integration"></span><h3>Flutter Integration<a class="headerlink" href="#module-flow_cli.core.flutter" title="Link to this heading"></a></h3>
+<p>Flutter project detection and management</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow_cli.core.flutter.</span></span><span class="sig-name descname"><span class="pre">FlutterProject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow_cli/core/flutter.html#FlutterProject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject" title="Link to this definition"></a></dt>
+<dd><p>Represents a Flutter project with its configuration</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.find_project">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flow_cli.core.flutter.FlutterProject" title="flow_cli.core.flutter.FlutterProject"><span class="pre">FlutterProject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/core/flutter.html#FlutterProject.find_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.find_project" title="Link to this definition"></a></dt>
+<dd><p>Find Flutter project by walking up the directory tree</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.flavors">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flavors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.flavors" title="Link to this definition"></a></dt>
+<dd><p>Get available flavors from project structure</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.flutter_version">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flutter_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.flutter_version" title="Link to this definition"></a></dt>
+<dd><p>Get Flutter version</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.get_build_outputs">
+<span class="sig-name descname"><span class="pre">get_build_outputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/core/flutter.html#FlutterProject.get_build_outputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.get_build_outputs" title="Link to this definition"></a></dt>
+<dd><p>Get build output files (APKs, IPAs, etc.)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.get_dependencies">
+<span class="sig-name descname"><span class="pre">get_dependencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/core/flutter.html#FlutterProject.get_dependencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.get_dependencies" title="Link to this definition"></a></dt>
+<dd><p>Get project dependencies</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.get_dev_dependencies">
+<span class="sig-name descname"><span class="pre">get_dev_dependencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/flow_cli/core/flutter.html#FlutterProject.get_dev_dependencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.get_dev_dependencies" title="Link to this definition"></a></dt>
+<dd><p>Get project dev dependencies</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.has_dependency">
+<span class="sig-name descname"><span class="pre">has_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/flow_cli/core/flutter.html#FlutterProject.has_dependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.has_dependency" title="Link to this definition"></a></dt>
+<dd><p>Check if project has a specific dependency</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.is_valid">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.is_valid" title="Link to this definition"></a></dt>
+<dd><p>Check if this is a valid Flutter project</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.name" title="Link to this definition"></a></dt>
+<dd><p>Get project name from pubspec.yaml</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.pubspec_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pubspec_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.pubspec_data" title="Link to this definition"></a></dt>
+<dd><p>Get pubspec.yaml data</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flow_cli.core.flutter.FlutterProject.version">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#flow_cli.core.flutter.FlutterProject.version" title="Link to this definition"></a></dt>
+<dd><p>Get project version from pubspec.yaml</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-flow_cli.core.ui.banner">
+<span id="ui-components"></span><h3>UI Components<a class="headerlink" href="#module-flow_cli.core.ui.banner" title="Link to this heading"></a></h3>
+<p>Banner and visual elements for Flow CLI</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.core.ui.banner.show_banner">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.core.ui.banner.</span></span><span class="sig-name descname"><span class="pre">show_banner</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/core/ui/banner.html#show_banner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.ui.banner.show_banner" title="Link to this definition"></a></dt>
+<dd><p>Show the main Flow CLI banner</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.core.ui.banner.show_error">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.core.ui.banner.</span></span><span class="sig-name descname"><span class="pre">show_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/core/ui/banner.html#show_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.ui.banner.show_error" title="Link to this definition"></a></dt>
+<dd><p>Show an error message</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.core.ui.banner.show_info">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.core.ui.banner.</span></span><span class="sig-name descname"><span class="pre">show_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/core/ui/banner.html#show_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.ui.banner.show_info" title="Link to this definition"></a></dt>
+<dd><p>Show an info message</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.core.ui.banner.show_section_header">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.core.ui.banner.</span></span><span class="sig-name descname"><span class="pre">show_section_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'📋'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/core/ui/banner.html#show_section_header"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.ui.banner.show_section_header" title="Link to this definition"></a></dt>
+<dd><p>Show a section header with consistent styling</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.core.ui.banner.show_success">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.core.ui.banner.</span></span><span class="sig-name descname"><span class="pre">show_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/core/ui/banner.html#show_success"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.ui.banner.show_success" title="Link to this definition"></a></dt>
+<dd><p>Show a success message</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flow_cli.core.ui.banner.show_warning">
+<span class="sig-prename descclassname"><span class="pre">flow_cli.core.ui.banner.</span></span><span class="sig-name descname"><span class="pre">show_warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/flow_cli/core/ui/banner.html#show_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow_cli.core.ui.banner.show_warning" title="Link to this definition"></a></dt>
+<dd><p>Show a warning message</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="commands.html" class="btn btn-neutral float-left" title="Command Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Flow CLI Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

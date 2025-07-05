@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>flow_cli.commands.ios.run &mdash; Flow CLI 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Flow CLI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../commands.html">Command Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Flow CLI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">flow_cli.commands.ios.run</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for flow_cli.commands.ios.run</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">iOS run command - Run Flutter app on iOS simulators and devices</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inquirer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.flutter</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlutterProject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">flow_cli.core.ui.banner</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_section_header</span><span class="p">,</span> <span class="n">show_success</span><span class="p">,</span> <span class="n">show_error</span><span class="p">,</span> <span class="n">show_warning</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--flavor&#39;</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Flavor to run&#39;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--device&#39;</span><span class="p">,</span> <span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Device ID or name to run on&#39;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--release&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Run in release mode&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_command</span><span class="p">(</span><span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">release</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ▶️ Run Flutter app on iOS simulator or device</span>
+<span class="sd">    </span>
+<span class="sd">    Launches your Flutter app on an iOS simulator or connected device</span>
+<span class="sd">    with support for hot reload, debugging, and flavor selection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Check if running on macOS</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>
+        <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;iOS development is only available on macOS&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    
+    <span class="c1"># Find Flutter project</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">FlutterProject</span><span class="o">.</span><span class="n">find_project</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">project</span><span class="p">:</span>
+        <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;No Flutter project found in current directory&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+    
+    <span class="n">show_section_header</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running iOS App: </span><span class="si">{</span><span class="n">project</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;▶️&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Get available devices</span>
+    <span class="n">ios_devices</span> <span class="o">=</span> <span class="n">get_ios_devices</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ios_devices</span><span class="p">:</span>
+        <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;No iOS devices or simulators available&quot;</span><span class="p">)</span>
+        <span class="n">show_setup_instructions</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+    
+    <span class="c1"># Interactive device selection if needed</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">device</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">select_ios_device</span><span class="p">(</span><span class="n">ios_devices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Validate provided device</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">validate_device</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">ios_devices</span><span class="p">):</span>
+            <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device &#39;</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&#39; not found or not available&quot;</span><span class="p">)</span>
+            <span class="n">show_available_devices</span><span class="p">(</span><span class="n">ios_devices</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+    
+    <span class="c1"># Interactive flavor selection if needed</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">flavor</span> <span class="ow">and</span> <span class="n">project</span><span class="o">.</span><span class="n">flavors</span><span class="p">:</span>
+        <span class="n">flavor</span> <span class="o">=</span> <span class="n">select_flavor</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">flavors</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">flavor</span><span class="p">:</span>
+            <span class="k">return</span>
+    
+    <span class="c1"># Ensure simulator is booted if it&#39;s a simulator</span>
+    <span class="n">selected_device</span> <span class="o">=</span> <span class="n">get_device_by_identifier</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">ios_devices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">selected_device</span> <span class="ow">and</span> <span class="n">selected_device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_simulator&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ensure_simulator_running</span><span class="p">(</span><span class="n">selected_device</span><span class="p">):</span>
+            <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;Failed to start simulator&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">click</span><span class="o">.</span><span class="n">Abort</span><span class="p">()</span>
+    
+    <span class="c1"># Run the Flutter app</span>
+    <span class="n">run_flutter_app</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">flavor</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">release</span><span class="p">)</span>
+
+<div class="viewcode-block" id="get_ios_devices">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.get_ios_devices">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ios_devices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available iOS devices and simulators&quot;&quot;&quot;</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Get Flutter devices</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="s1">&#39;devices&#39;</span><span class="p">,</span> <span class="s1">&#39;--machine&#39;</span><span class="p">],</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span>
+        <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">flutter_devices</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">flutter_devices</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;platform&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;ios&#39;</span><span class="p">:</span>
+                    <span class="n">devices</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;platform&#39;</span><span class="p">:</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;platform&#39;</span><span class="p">,</span> <span class="s1">&#39;ios&#39;</span><span class="p">),</span>
+                        <span class="s1">&#39;is_simulator&#39;</span><span class="p">:</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;emulator&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                        <span class="s1">&#39;sdk&#39;</span><span class="p">:</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sdk&#39;</span><span class="p">,</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">),</span>
+                        <span class="s1">&#39;available&#39;</span><span class="p">:</span> <span class="kc">True</span>
+                    <span class="p">})</span>
+    
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># Fallback: get simulators directly</span>
+        <span class="n">devices</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">get_simulators_direct</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">devices</span></div>
+
+
+<div class="viewcode-block" id="get_simulators_direct">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.get_simulators_direct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_simulators_direct</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get simulators directly using simctl&quot;&quot;&quot;</span>
+    <span class="n">simulators</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;xcrun&#39;</span><span class="p">,</span> <span class="s1">&#39;simctl&#39;</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;devices&#39;</span><span class="p">,</span> <span class="s1">&#39;available&#39;</span><span class="p">,</span> <span class="s1">&#39;--json&#39;</span><span class="p">],</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span>
+        <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">runtime</span><span class="p">,</span> <span class="n">devices</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;devices&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s1">&#39;iOS&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">runtime</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                
+                <span class="n">runtime_name</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;com.apple.CoreSimulator.SimRuntime.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+                
+                <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;isAvailable&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                        <span class="n">simulators</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;udid&#39;</span><span class="p">],</span>
+                            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">runtime_name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+                            <span class="s1">&#39;platform&#39;</span><span class="p">:</span> <span class="s1">&#39;ios&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;is_simulator&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                            <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;Shutdown&#39;</span><span class="p">),</span>
+                            <span class="s1">&#39;runtime&#39;</span><span class="p">:</span> <span class="n">runtime_name</span><span class="p">,</span>
+                            <span class="s1">&#39;available&#39;</span><span class="p">:</span> <span class="kc">True</span>
+                        <span class="p">})</span>
+    
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+    <span class="k">return</span> <span class="n">simulators</span></div>
+
+
+<div class="viewcode-block" id="select_ios_device">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.select_ios_device">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">select_ios_device</span><span class="p">(</span><span class="n">devices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interactive iOS device selection&quot;&quot;&quot;</span>
+    
+    <span class="c1"># Separate physical devices and simulators</span>
+    <span class="n">physical_devices</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">devices</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_simulator&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+    <span class="n">simulators</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">devices</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_simulator&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+    
+    <span class="n">choices</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Add physical devices first</span>
+    <span class="k">if</span> <span class="n">physical_devices</span><span class="p">:</span>
+        <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--- Physical Devices ---&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">physical_devices</span><span class="p">:</span>
+            <span class="n">choice_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;📱 </span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (Physical)&quot;</span>
+            <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">choice_text</span><span class="p">,</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+    
+    <span class="c1"># Add simulators</span>
+    <span class="k">if</span> <span class="n">simulators</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">physical_devices</span><span class="p">:</span>
+            <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--- Simulators ---&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Group simulators by runtime</span>
+        <span class="n">by_runtime</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">simulators</span><span class="p">:</span>
+            <span class="n">runtime</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;runtime&#39;</span><span class="p">,</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">runtime</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">by_runtime</span><span class="p">:</span>
+                <span class="n">by_runtime</span><span class="p">[</span><span class="n">runtime</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">by_runtime</span><span class="p">[</span><span class="n">runtime</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
+        
+        <span class="c1"># Sort and add simulators</span>
+        <span class="k">for</span> <span class="n">runtime</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">by_runtime</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">by_runtime</span><span class="p">[</span><span class="n">runtime</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]):</span>
+                <span class="n">status_icon</span> <span class="o">=</span> <span class="s2">&quot;🟢&quot;</span> <span class="k">if</span> <span class="n">sim</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Booted&#39;</span> <span class="k">else</span> <span class="s2">&quot;⚫&quot;</span>
+                <span class="n">choice_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">status_icon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sim</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">choice_text</span><span class="p">,</span> <span class="n">sim</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">choices</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Filter out separator lines for inquirer</span>
+        <span class="n">inquirer_choices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">choice_map</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">text</span><span class="p">,</span> <span class="n">device_id</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="n">inquirer_choices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">choice_map</span><span class="p">[</span><span class="n">text</span><span class="p">]</span> <span class="o">=</span> <span class="n">device_id</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inquirer_choices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>  <span class="c1"># Separator</span>
+        
+        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
+                <span class="s1">&#39;device&#39;</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select iOS device or simulator:&quot;</span><span class="p">,</span>
+                <span class="n">choices</span><span class="o">=</span><span class="n">inquirer_choices</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="n">selection</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]</span>
+        
+        <span class="c1"># Skip separators</span>
+        <span class="k">if</span> <span class="n">selection</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;---&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="k">return</span> <span class="n">choice_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
+    
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="select_flavor">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.select_flavor">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">select_flavor</span><span class="p">(</span><span class="n">flavors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interactive flavor selection&quot;&quot;&quot;</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">flavors</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Default (no flavor)&quot;</span><span class="p">]</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">inquirer</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
+                <span class="s1">&#39;flavor&#39;</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select flavor:&quot;</span><span class="p">,</span>
+                <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">inquirer</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">answers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;flavor&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">selected</span> <span class="o">==</span> <span class="s2">&quot;Default (no flavor)&quot;</span> <span class="k">else</span> <span class="n">selected</span>
+    
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="validate_device">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.validate_device">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_device</span><span class="p">(</span><span class="n">device_identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate that device exists and is available&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">device_identifier</span> <span class="ow">in</span> <span class="p">[</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]:</span>
+            <span class="k">return</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;available&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="get_device_by_identifier">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.get_device_by_identifier">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_device_by_identifier</span><span class="p">(</span><span class="n">device_identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get device info by ID or name&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">device_identifier</span> <span class="ow">in</span> <span class="p">[</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]:</span>
+            <span class="k">return</span> <span class="n">device</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ensure_simulator_running">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.ensure_simulator_running">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_simulator_running</span><span class="p">(</span><span class="n">simulator</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure simulator is running before launching app&quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">simulator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Booted&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]Starting simulator: </span><span class="si">{</span><span class="n">simulator</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">...[/cyan]&quot;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;xcrun&#39;</span><span class="p">,</span> <span class="s1">&#39;simctl&#39;</span><span class="p">,</span> <span class="s1">&#39;boot&#39;</span><span class="p">,</span> <span class="n">simulator</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]],</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span>
+        <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Try to open Simulator.app</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;Simulator&#39;</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">show_success</span><span class="p">(</span><span class="s2">&quot;Simulator started successfully&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to start simulator: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">:</span>
+        <span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;Simulator startup timed out&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">show_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error starting simulator: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="run_flutter_app">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.run_flutter_app">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_flutter_app</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="n">FlutterProject</span><span class="p">,</span> <span class="n">flavor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">release</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run Flutter app with specified parameters&quot;&quot;&quot;</span>
+    
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;flutter&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">]</span>
+    
+    <span class="c1"># Add device</span>
+    <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="n">device</span><span class="p">])</span>
+    
+    <span class="c1"># Add flavor if specified</span>
+    <span class="k">if</span> <span class="n">flavor</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;--flavor&#39;</span><span class="p">,</span> <span class="n">flavor</span><span class="p">])</span>
+    
+    <span class="c1"># Add build mode</span>
+    <span class="k">if</span> <span class="n">release</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--release&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Display run information</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]Running on device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">flavor</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]Using flavor: </span><span class="si">{</span><span class="n">flavor</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[cyan]Build mode: </span><span class="si">{</span><span class="s1">&#39;release&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">release</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;debug&#39;</span><span class="si">}</span><span class="s2">[/cyan]&quot;</span><span class="p">)</span>
+    
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[yellow]Flutter controls:[/yellow]&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • Press &#39;r&#39; to hot reload&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • Press &#39;R&#39; to hot restart&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • Press &#39;q&#39; to quit&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • Press &#39;h&#39; for help&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Run Flutter</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[dim]App stopped[/dim]&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_available_devices">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.show_available_devices">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">show_available_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show list of available devices&quot;&quot;&quot;</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[cyan]Available devices:[/cyan]&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Group and display</span>
+    <span class="n">physical</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">devices</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_simulator&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+    <span class="n">simulators</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">devices</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_simulator&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+    
+    <span class="k">if</span> <span class="n">physical</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  [green]📱 Physical Devices:[/green]&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">physical</span><span class="p">:</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    • </span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">simulators</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  [blue]🖥️ Simulators:[/blue]&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">simulators</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>  <span class="c1"># Show first 5</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;🟢&quot;</span> <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Booted&#39;</span> <span class="k">else</span> <span class="s2">&quot;⚫&quot;</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">device</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">][:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">...)&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_setup_instructions">
+<a class="viewcode-back" href="../../../../api.html#flow_cli.commands.ios.run.show_setup_instructions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">show_setup_instructions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show iOS setup instructions&quot;&quot;&quot;</span>
+    
+    <span class="n">instructions</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[yellow]No iOS devices available.[/yellow]</span>
+
+<span class="s2">To set up iOS development:</span>
+
+<span class="s2">1. [green]For Simulators:[/green]</span>
+<span class="s2">   • Open Xcode</span>
+<span class="s2">   • Go to Window → Devices and Simulators</span>
+<span class="s2">   • Click &#39;+&#39; to add simulator</span>
+<span class="s2">   • Or run: [cyan]xcrun simctl create &quot;iPhone 15&quot; &quot;iPhone 15&quot;[/cyan]</span>
+
+<span class="s2">2. [green]For Physical Devices:[/green]</span>
+<span class="s2">   • Connect iPhone/iPad via USB</span>
+<span class="s2">   • Trust computer on device</span>
+<span class="s2">   • Enable Developer Mode (iOS 16+)</span>
+<span class="s2">   • Ensure device is registered in Apple Developer portal</span>
+
+<span class="s2">3. [green]Check available devices:[/green]</span>
+<span class="s2">   [cyan]flow ios devices[/cyan]</span>
+
+<span class="s2">4. [green]Start a simulator:[/green]</span>
+<span class="s2">   [cyan]flow ios devices --start &quot;iPhone 15&quot;[/cyan]&quot;&quot;&quot;</span>
+    
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rich</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
+    
+    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+        <span class="n">instructions</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;💡 iOS Setup Instructions&quot;</span><span class="p">,</span>
+        <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
+    <span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Flow CLI Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

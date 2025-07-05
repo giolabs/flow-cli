@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; Flow CLI 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Command Reference" href="commands.html" />
+    <link rel="prev" title="Flow CLI Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Flow CLI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#via-pypi-recommended">Via PyPI (Recommended)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#verify-installation">Verify Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#via-binary-cross-platform">Via Binary (Cross-Platform)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-macos">Linux/macOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-binary-download">Manual Binary Download</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#from-source">From Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-installation">Development Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#virtual-environment-recommended">Virtual Environment (Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#development-dependencies">Development Dependencies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#required">Required</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#optional-platform-specific">Optional (Platform-specific)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#post-installation-setup">Post-Installation Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1. Verify Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure-environment">2. Configure Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-development-environment">3. Check Development Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#permission-issues">Permission Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-version-issues">Python Version Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#path-issues">PATH Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-flow-cli">Updating Flow CLI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#via-pypi">Via PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#via-binary">Via Binary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">From Source</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#uninstalling">Uninstalling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Via PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binary-installation">Binary Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clean-removal">Clean Removal</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Command Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flow CLI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p>Flow CLI can be installed in multiple ways to suit your development environment and preferences.</p>
+<section id="via-pypi-recommended">
+<h2>Via PyPI (Recommended)<a class="headerlink" href="#via-pypi-recommended" title="Link to this heading"></a></h2>
+<p>The easiest way to install Flow CLI is via PyPI using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>flow-cli
+</pre></div>
+</div>
+<section id="verify-installation">
+<h3>Verify Installation<a class="headerlink" href="#verify-installation" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>--version
+</pre></div>
+</div>
+</section>
+</section>
+<section id="via-binary-cross-platform">
+<h2>Via Binary (Cross-Platform)<a class="headerlink" href="#via-binary-cross-platform" title="Link to this heading"></a></h2>
+<p>Pre-built binaries are available for major platforms:</p>
+<section id="linux-macos">
+<h3>Linux/macOS<a class="headerlink" href="#linux-macos" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://github.com/flowstore/flow-cli/releases/latest/download/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</pre></div>
+</div>
+</section>
+<section id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-WebRequest</span> <span class="n">-Uri</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">flowstore</span><span class="p">/</span><span class="n">flow-cli</span><span class="p">/</span><span class="n">releases</span><span class="p">/</span><span class="n">latest</span><span class="p">/</span><span class="n">download</span><span class="p">/</span><span class="n">flow-cli-windows</span><span class="p">.</span><span class="n">exe</span> <span class="n">-OutFile</span> <span class="n">flow</span><span class="p">.</span><span class="n">exe</span>
+</pre></div>
+</div>
+</section>
+<section id="manual-binary-download">
+<h3>Manual Binary Download<a class="headerlink" href="#manual-binary-download" title="Link to this heading"></a></h3>
+<p>Download the appropriate binary for your platform from the <a class="reference external" href="https://github.com/flowstore/flow-cli/releases">releases page</a>:</p>
+<ul class="simple">
+<li><p><strong>Linux</strong>: <code class="docutils literal notranslate"><span class="pre">flow-cli-linux</span></code></p></li>
+<li><p><strong>macOS</strong>: <code class="docutils literal notranslate"><span class="pre">flow-cli-macos</span></code></p></li>
+<li><p><strong>Windows</strong>: <code class="docutils literal notranslate"><span class="pre">flow-cli-windows.exe</span></code></p></li>
+</ul>
+<p>Place the binary in your PATH and make it executable (Linux/macOS):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod<span class="w"> </span>+x<span class="w"> </span>flow-cli-*
+sudo<span class="w"> </span>mv<span class="w"> </span>flow-cli-*<span class="w"> </span>/usr/local/bin/flow
+</pre></div>
+</div>
+</section>
+</section>
+<section id="from-source">
+<h2>From Source<a class="headerlink" href="#from-source" title="Link to this heading"></a></h2>
+<p>For development or if you want the latest features:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/flowstore/flow-cli.git
+<span class="nb">cd</span><span class="w"> </span>flow-cli
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+<section id="development-installation">
+<h3>Development Installation<a class="headerlink" href="#development-installation" title="Link to this heading"></a></h3>
+<p>If you plan to contribute or modify Flow CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/flowstore/flow-cli.git
+<span class="nb">cd</span><span class="w"> </span>flow-cli
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+pre-commit<span class="w"> </span>install
+</pre></div>
+</div>
+</section>
+</section>
+<section id="virtual-environment-recommended">
+<h2>Virtual Environment (Recommended)<a class="headerlink" href="#virtual-environment-recommended" title="Link to this heading"></a></h2>
+<p>To avoid conflicts with system packages, use a virtual environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>flow-cli-env
+<span class="nb">source</span><span class="w"> </span>flow-cli-env/bin/activate<span class="w">  </span><span class="c1"># On Windows: flow-cli-env\Scripts\activate</span>
+pip<span class="w"> </span>install<span class="w"> </span>flow-cli
+</pre></div>
+</div>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<section id="system-requirements">
+<h3>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Python</strong>: 3.8 or higher</p></li>
+<li><p><strong>Operating System</strong>:
+- Linux (Ubuntu 18.04+, CentOS 7+, or equivalent)
+- macOS 10.15+
+- Windows 10+</p></li>
+</ul>
+</section>
+<section id="development-dependencies">
+<h3>Development Dependencies<a class="headerlink" href="#development-dependencies" title="Link to this heading"></a></h3>
+<p>Flow CLI works best when these tools are installed:</p>
+<section id="required">
+<h4>Required<a class="headerlink" href="#required" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Flutter SDK</strong>: Latest stable version</p></li>
+<li><p><strong>Git</strong>: For version control features</p></li>
+</ul>
+</section>
+<section id="optional-platform-specific">
+<h4>Optional (Platform-specific)<a class="headerlink" href="#optional-platform-specific" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Android SDK</strong>: For Android development</p></li>
+<li><p><strong>Java JDK</strong>: 8 or higher (for Android builds)</p></li>
+<li><p><strong>Xcode</strong>: Latest version (macOS only, for iOS development)</p></li>
+<li><p><strong>Ruby &amp; Bundler</strong>: For Fastlane integration</p></li>
+<li><p><strong>Node.js</strong>: For certain build tools</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="post-installation-setup">
+<h2>Post-Installation Setup<a class="headerlink" href="#post-installation-setup" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>1. Verify Installation<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>--version
+flow<span class="w"> </span>doctor
+</pre></div>
+</div>
+</section>
+<section id="configure-environment">
+<h3>2. Configure Environment<a class="headerlink" href="#configure-environment" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>config<span class="w"> </span>--init
+</pre></div>
+</div>
+<p>This interactive wizard will help you configure:</p>
+<ul class="simple">
+<li><p>Flutter SDK path</p></li>
+<li><p>Android SDK path (if available)</p></li>
+<li><p>iOS/Xcode path (macOS only)</p></li>
+<li><p>Default preferences</p></li>
+</ul>
+</section>
+<section id="check-development-environment">
+<h3>3. Check Development Environment<a class="headerlink" href="#check-development-environment" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>flow<span class="w"> </span>doctor
+</pre></div>
+</div>
+<p>This will verify that all required tools are properly installed and configured.</p>
+</section>
+</section>
+<section id="troubleshooting-installation">
+<h2>Troubleshooting Installation<a class="headerlink" href="#troubleshooting-installation" title="Link to this heading"></a></h2>
+<section id="permission-issues">
+<h3>Permission Issues<a class="headerlink" href="#permission-issues" title="Link to this heading"></a></h3>
+<p>If you encounter permission errors:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use --user flag</span>
+pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>flow-cli
+
+<span class="c1"># Or create virtual environment</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>flow-cli
+</pre></div>
+</div>
+</section>
+<section id="python-version-issues">
+<h3>Python Version Issues<a class="headerlink" href="#python-version-issues" title="Link to this heading"></a></h3>
+<p>Check your Python version:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>--version
+<span class="c1"># Should be 3.8 or higher</span>
+</pre></div>
+</div>
+<p>If you have multiple Python versions, ensure you’re using the correct one:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>flow-cli
+</pre></div>
+</div>
+</section>
+<section id="path-issues">
+<h3>PATH Issues<a class="headerlink" href="#path-issues" title="Link to this heading"></a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">flow</span></code> command is not found after installation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if it&#39;s installed</span>
+pip<span class="w"> </span>show<span class="w"> </span>flow-cli
+
+<span class="c1"># Add to PATH (example for bash)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;$HOME/.local/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+</pre></div>
+</div>
+</section>
+</section>
+<section id="updating-flow-cli">
+<h2>Updating Flow CLI<a class="headerlink" href="#updating-flow-cli" title="Link to this heading"></a></h2>
+<section id="via-pypi">
+<h3>Via PyPI<a class="headerlink" href="#via-pypi" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>flow-cli
+</pre></div>
+</div>
+</section>
+<section id="via-binary">
+<h3>Via Binary<a class="headerlink" href="#via-binary" title="Link to this heading"></a></h3>
+<p>Download the latest binary from the releases page and replace the existing installation.</p>
+</section>
+<section id="id2">
+<h3>From Source<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="uninstalling">
+<h2>Uninstalling<a class="headerlink" href="#uninstalling" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>Via PyPI<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>uninstall<span class="w"> </span>flow-cli
+</pre></div>
+</div>
+</section>
+<section id="binary-installation">
+<h3>Binary Installation<a class="headerlink" href="#binary-installation" title="Link to this heading"></a></h3>
+<p>Simply remove the binary file from your PATH.</p>
+</section>
+<section id="clean-removal">
+<h3>Clean Removal<a class="headerlink" href="#clean-removal" title="Link to this heading"></a></h3>
+<p>To completely remove Flow CLI including configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>uninstall<span class="w"> </span>flow-cli
+rm<span class="w"> </span>-rf<span class="w"> </span>~/.flow-cli<span class="w">  </span><span class="c1"># Remove configuration directory</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Flow CLI Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="commands.html" class="btn btn-neutral float-right" title="Command Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Flow CLI Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
