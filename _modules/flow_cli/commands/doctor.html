@@ -94,20 +94,20 @@
 
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Show detailed information&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">doctor_command</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--fix&quot;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Attempt to fix detected issues&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--json&quot;</span><span class="p">,</span> <span class="s2">&quot;json_output&quot;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output results in JSON format&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">doctor_command</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">fix</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">json_output</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    🩺 Check development environment health</span>
 
 <span class="sd">    Verifies that all required tools are installed and configured correctly</span>
 <span class="sd">    for Flutter development with Flow CLI.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;Environment Health Check&quot;</span><span class="p">,</span> <span class="s2">&quot;🩺&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">json_output</span><span class="p">:</span>
+        <span class="n">show_section_header</span><span class="p">(</span><span class="s2">&quot;Environment Health Check&quot;</span><span class="p">,</span> <span class="s2">&quot;🩺&quot;</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="n">Progress</span><span class="p">(</span>
-        <span class="n">SpinnerColumn</span><span class="p">(),</span> <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">console</span><span class="o">=</span><span class="n">console</span>
-    <span class="p">)</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
-
-        <span class="c1"># Collect all checks</span>
+    <span class="k">if</span> <span class="n">json_output</span><span class="p">:</span>
+        <span class="c1"># For JSON output, run checks without progress indicators</span>
         <span class="n">checks</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="s2">&quot;Checking Flutter SDK...&quot;</span><span class="p">,</span> <span class="n">check_flutter</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;Checking Python environment...&quot;</span><span class="p">,</span> <span class="n">check_python</span><span class="p">),</span>
@@ -116,17 +116,44 @@
             <span class="p">(</span><span class="s2">&quot;Checking Git...&quot;</span><span class="p">,</span> <span class="n">check_git</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;Checking required Python packages...&quot;</span><span class="p">,</span> <span class="n">check_python_packages</span><span class="p">),</span>
         <span class="p">]</span>
-
+        
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-
         <span class="k">for</span> <span class="n">description</span><span class="p">,</span> <span class="n">check_func</span> <span class="ow">in</span> <span class="n">checks</span><span class="p">:</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">check_func</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
             <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-            <span class="n">progress</span><span class="o">.</span><span class="n">remove_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># For normal output, show progress</span>
+        <span class="k">with</span> <span class="n">Progress</span><span class="p">(</span>
+            <span class="n">SpinnerColumn</span><span class="p">(),</span> <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">console</span><span class="o">=</span><span class="n">console</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">progress</span><span class="p">:</span>
+
+            <span class="c1"># Collect all checks</span>
+            <span class="n">checks</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;Checking Flutter SDK...&quot;</span><span class="p">,</span> <span class="n">check_flutter</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;Checking Python environment...&quot;</span><span class="p">,</span> <span class="n">check_python</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;Checking Android SDK...&quot;</span><span class="p">,</span> <span class="n">check_android</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;Checking iOS development (macOS only)...&quot;</span><span class="p">,</span> <span class="n">check_ios</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;Checking Git...&quot;</span><span class="p">,</span> <span class="n">check_git</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;Checking required Python packages...&quot;</span><span class="p">,</span> <span class="n">check_python_packages</span><span class="p">),</span>
+            <span class="p">]</span>
+
+            <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">description</span><span class="p">,</span> <span class="n">check_func</span> <span class="ow">in</span> <span class="n">checks</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">check_func</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="n">progress</span><span class="o">.</span><span class="n">remove_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 
     <span class="c1"># Display results</span>
-    <span class="n">display_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">json_output</span><span class="p">:</span>
+        <span class="n">display_json_results</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">display_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        
+    <span class="c1"># Handle fix flag</span>
+    <span class="k">if</span> <span class="n">fix</span><span class="p">:</span>
+        <span class="n">handle_fixes</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="check_flutter">
@@ -408,6 +435,76 @@
             <span class="n">rec_text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;💡 Recommendations&quot;</span><span class="p">,</span> <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span>
         <span class="p">)</span>
         <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">rec_panel</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="display_json_results">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.display_json_results">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">display_json_results</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display results in JSON format&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+    
+    <span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s2">&quot;checks&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+    
+    <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">details</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;checks&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="n">component</span><span class="p">,</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+            <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">,</span>
+            <span class="s2">&quot;details&quot;</span><span class="p">:</span> <span class="n">details</span>
+        <span class="p">})</span>
+    
+    <span class="c1"># Count statuses</span>
+    <span class="n">status_counts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;warning&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;✅&quot;</span><span class="p">:</span>
+            <span class="n">status_counts</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">:</span>
+            <span class="n">status_counts</span><span class="p">[</span><span class="s2">&quot;warning&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;❌&quot;</span><span class="p">:</span>
+            <span class="n">status_counts</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;ℹ️&quot;</span><span class="p">:</span>
+            <span class="n">status_counts</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">status_counts</span>
+    
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="handle_fixes">
+<a class="viewcode-back" href="../../../api.html#flow_cli.commands.doctor.handle_fixes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_fixes</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attempt to fix detected issues&quot;&quot;&quot;</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold blue]🔧 Attempting to fix issues...[/bold blue]&quot;</span><span class="p">)</span>
+    
+    <span class="n">fixes_applied</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">details</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;❌&quot;</span><span class="p">,</span> <span class="s2">&quot;⚠️&quot;</span><span class="p">]:</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[yellow]• </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">[/yellow]&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Simple fix suggestions - in a real implementation, these would be more sophisticated</span>
+            <span class="k">if</span> <span class="s2">&quot;Flutter SDK&quot;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">and</span> <span class="s2">&quot;Not found&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  [dim]→ Install Flutter SDK from https://flutter.dev[/dim]&quot;</span><span class="p">)</span>
+                <span class="n">fixes_applied</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="s2">&quot;Android SDK&quot;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">and</span> <span class="s2">&quot;Not found&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  [dim]→ Install Android Studio and Android SDK[/dim]&quot;</span><span class="p">)</span>
+                <span class="n">fixes_applied</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="s2">&quot;Git&quot;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">and</span> <span class="s2">&quot;Not found&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  [dim]→ Install Git from https://git-scm.com[/dim]&quot;</span><span class="p">)</span>
+                <span class="n">fixes_applied</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="s2">&quot;Python Packages&quot;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">and</span> <span class="s2">&quot;missing&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  [dim]→ Run: pip install -r requirements.txt[/dim]&quot;</span><span class="p">)</span>
+                <span class="n">fixes_applied</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="k">if</span> <span class="n">fixes_applied</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[green]✅ Applied </span><span class="si">{</span><span class="n">fixes_applied</span><span class="si">}</span><span class="s2"> fix suggestions[/green]&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[blue]ℹ️ No automatic fixes available[/blue]&quot;</span><span class="p">)</span></div>
 
 </pre></div>
 
