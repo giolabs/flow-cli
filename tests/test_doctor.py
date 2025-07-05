@@ -5,17 +5,17 @@ Tests for the doctor command
 # mypy: ignore-errors
 
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 from unittest.mock import Mock, patch
 
 import pytest
 from click.testing import CliRunner
 
 from flow_cli.commands.doctor import (
-    check_android_setup,
-    check_flutter_setup,
-    check_git_setup,
-    check_ios_setup,
+    check_android,
+    check_flutter,
+    check_git,
+    check_ios,
     doctor_command,
 )
 from tests.conftest import assert_command_success, assert_performance_under_threshold
@@ -229,10 +229,16 @@ def test_check_flutter_setup(monkeypatch: Any, flutter_exists: bool) -> None:
 
     monkeypatch.setattr("shutil.which", mock_which)
 
-    result = check_flutter_setup()
+    result = check_flutter(verbose=False)
 
-    assert "flutter_installed" in result
-    assert result["flutter_installed"] == flutter_exists
+    # Result is a tuple: (component, status, info, details)
+    assert isinstance(result, tuple)
+    assert len(result) == 4
+    assert result[0] == "Flutter SDK"
+    if flutter_exists:
+        assert result[1] == "✅"  # Status is checkmark
+    else:
+        assert result[1] == "❌"  # Status is X
 
 
 def test_check_android_setup(monkeypatch: Any) -> None:
@@ -253,10 +259,12 @@ def test_check_android_setup(monkeypatch: Any) -> None:
     monkeypatch.setattr("shutil.which", mock_which)
     monkeypatch.setattr("os.environ.get", mock_environ_get)
 
-    result = check_android_setup()
+    result = check_android(verbose=False)
 
-    assert "android_installed" in result
-    assert result["android_installed"] is True
+    # Result is a tuple: (component, status, info, details)
+    assert isinstance(result, tuple)
+    assert len(result) == 4
+    assert result[0] == "Android SDK"
 
 
 def test_check_ios_setup_on_macos(monkeypatch: Any) -> None:
@@ -272,10 +280,12 @@ def test_check_ios_setup_on_macos(monkeypatch: Any) -> None:
 
     monkeypatch.setattr("shutil.which", mock_which)
 
-    result = check_ios_setup()
+    result = check_ios(verbose=False)
 
-    assert "ios_development_possible" in result
-    assert result["ios_development_possible"] is True
+    # Result is a tuple: (component, status, info, details)
+    assert isinstance(result, tuple)
+    assert len(result) == 4
+    assert result[0] == "iOS Development"
 
 
 def test_check_ios_setup_non_macos(monkeypatch: Any) -> None:
@@ -284,11 +294,13 @@ def test_check_ios_setup_non_macos(monkeypatch: Any) -> None:
     # Mock platform.system to return 'Linux'
     monkeypatch.setattr("platform.system", lambda: "Linux")
 
-    result = check_ios_setup()
+    result = check_ios(verbose=False)
 
-    assert "ios_development_possible" in result
-    assert result["ios_development_possible"] is False
-    assert "requires_macos" in result
+    # Result is a tuple: (component, status, info, details)
+    assert isinstance(result, tuple)
+    assert len(result) == 4
+    assert result[0] == "iOS Development"
+    assert "macOS" in result[3]  # Details should mention macOS requirement
 
 
 def test_check_git_setup_installed(monkeypatch: Any) -> None:
@@ -301,10 +313,13 @@ def test_check_git_setup_installed(monkeypatch: Any) -> None:
 
     monkeypatch.setattr("shutil.which", mock_which)
 
-    result = check_git_setup()
+    result = check_git(verbose=False)
 
-    assert "git_installed" in result
-    assert result["git_installed"] is True
+    # Result is a tuple: (component, status, info, details)
+    assert isinstance(result, tuple)
+    assert len(result) == 4
+    assert result[0] == "Git"
+    assert result[1] == "✅"  # Status is checkmark
 
 
 def test_check_git_setup_not_installed(monkeypatch: Any) -> None:
@@ -315,32 +330,51 @@ def test_check_git_setup_not_installed(monkeypatch: Any) -> None:
 
     monkeypatch.setattr("shutil.which", mock_which)
 
-    result = check_git_setup()
+    result = check_git(verbose=False)
 
-    assert "git_installed" in result
-    assert result["git_installed"] is False
+    # Result is a tuple: (component, status, info, details)
+    assert isinstance(result, tuple)
+    assert len(result) == 4
+    assert result[0] == "Git"
+    assert result[1] == "❌"  # Status is X
 
 
 def test_doctor_command_success(monkeypatch: Any, capsys: Any) -> None:
     """Test doctor command with all checks passing"""
 
-    # Mock all check functions
+    # Mock all check functions with tuple returns
     monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_flutter_setup",
-        lambda: {"flutter_installed": True, "version": "3.13.1"},
+        "flow_cli.commands.doctor.check_flutter",
+        lambda verbose: (
+            "Flutter SDK",
+            "✅",
+            "Flutter 3.13.1",
+            "All Flutter dependencies satisfied",
+        ),
     )
     monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_android_setup",
-        lambda: {"android_installed": True, "sdk_path": "/android/sdk"},
+        "flow_cli.commands.doctor.check_android",
+        lambda verbose: ("Android SDK", "✅", "Android SDK found", "SDK at /android/sdk"),
     )
     monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_ios_setup",
-        lambda: {"ios_development_possible": True, "xcode_installed": True},
+        "flow_cli.commands.doctor.check_ios",
+        lambda verbose: ("iOS Development", "✅", "Xcode available", "iOS simulators found"),
     )
-    monkeypatch.setattr("flow_cli.commands.doctor.check_git_setup", lambda: {"git_installed": True})
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_git",
+        lambda verbose: ("Git", "✅", "Git 2.30.1", "Git is available"),
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_python",
+        lambda verbose: ("Python", "✅", "Python 3.9.5", "Python version is compatible"),
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_python_packages",
+        lambda verbose: ("Python Packages", "✅", "All packages available", "All packages found"),
+    )
 
     # Run doctor command
-    doctor_command()
+    doctor_command(verbose=False)
 
     # Check output
     captured = capsys.readouterr()
@@ -353,23 +387,37 @@ def test_doctor_command_failures(monkeypatch: Any, capsys: Any) -> None:
 
     # Mock check functions with failures
     monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_flutter_setup",
-        lambda: {"flutter_installed": False, "error": "Flutter not found"},
+        "flow_cli.commands.doctor.check_flutter",
+        lambda verbose: ("Flutter SDK", "❌", "Not found", "Install Flutter SDK from flutter.dev"),
     )
     monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_android_setup",
-        lambda: {"android_installed": False, "error": "Android SDK not found"},
+        "flow_cli.commands.doctor.check_android",
+        lambda verbose: ("Android SDK", "❌", "Not found", "Install Android SDK"),
     )
     monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_ios_setup",
-        lambda: {"ios_development_possible": False, "requires_macos": True},
+        "flow_cli.commands.doctor.check_ios",
+        lambda verbose: (
+            "iOS Development",
+            "ℹ️",
+            "Not applicable",
+            "iOS development requires macOS",
+        ),
     )
     monkeypatch.setattr(
-        "flow_cli.commands.doctor.check_git_setup", lambda: {"git_installed": False}
+        "flow_cli.commands.doctor.check_git",
+        lambda verbose: ("Git", "❌", "Not found", "Install Git from git-scm.com"),
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_python",
+        lambda verbose: ("Python", "✅", "Python 3.9.5", "Python version is compatible"),
+    )
+    monkeypatch.setattr(
+        "flow_cli.commands.doctor.check_python_packages",
+        lambda verbose: ("Python Packages", "⚠️", "2 missing", "Missing: inquirer, pyyaml"),
     )
 
     # Run doctor command
-    doctor_command()
+    doctor_command(verbose=False)
 
     # Check output
     captured = capsys.readouterr()
