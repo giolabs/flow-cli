@@ -306,6 +306,7 @@ class TestKeystoreGeneration:
                 mock_file.assert_called()
                 assert_command_success(result)
     
+    @pytest.mark.performance
     def test_keystore_performance(self, cli_runner, mock_flutter_project, mock_inquirer_prompt, mock_subprocess_run, performance_timer):
         """Test keystore generation performance"""
         mock_inquirer_prompt.return_value = {
@@ -505,6 +506,7 @@ version: 1.0.0+1
             assert any('--flavor development' in str(call) for call in flutter_calls)
             assert_command_success(result)
     
+    @pytest.mark.performance
     def test_release_performance(self, cli_runner, mock_flutter_project, mock_inquirer_prompt, mock_subprocess_run, performance_timer):
         """Test release command performance"""
         # Create required files

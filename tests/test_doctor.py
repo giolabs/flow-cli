@@ -13,6 +13,7 @@ from tests.conftest import assert_command_success, assert_performance_under_thre
 class TestDoctorCommand:
     """Test suite for doctor command"""
     
+    @pytest.mark.performance
     def test_doctor_command_success(self, cli_runner, mock_subprocess_run, performance_timer):
         """Test doctor command executes successfully"""
         # Mock successful environment checks
@@ -104,6 +105,7 @@ class TestDoctorCommand:
         # Should attempt to fix issues
         assert "fix" in result.output.lower() or "repair" in result.output.lower()
     
+    @pytest.mark.performance
     def test_doctor_performance_under_threshold(self, cli_runner, mock_subprocess_run, performance_timer):
         """Test doctor command completes within performance threshold"""
         mock_subprocess_run.return_value.returncode = 0
